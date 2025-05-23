@@ -1,11 +1,40 @@
-## House Prices - Advanced Regression Techniques
-Ask a home buyer to describe their dream house, and they probably won't begin with the height of the basement ceiling or the proximity to an east-west railroad. But this playground competition's dataset proves that much more influences price negotiations than the number of bedrooms or a white-picket fence.
+# 🏠 House Prices - Previsão de Imóveis
 
-With 79 explanatory variables describing (almost) every aspect of residential homes in Ames, Iowa, this competition challenges you to predict the final price of each home.
-Practice Skills
-Creative feature engineering 
-Advanced regression techniques like random forest and gradient boosting
-Acknowledgments
-The Ames Housing dataset was compiled by Dean De Cock for use in data science education. It's an incredible alternative for data scientists looking for a modernized and expanded version of the often cited Boston Housing dataset. 
+Projeto baseado no desafio [House Prices - Kaggle](https://www.kaggle.com/c/house-prices-advanced-regression-techniques), com o objetivo de prever o preço de casas em Ames, Iowa.
 
-from [https://www.kaggle.com/competitions/house-prices-advanced-regression-techniques/overview]
+## 📌 Objetivo
+Aplicar técnicas de aprendizado de máquina para prever o preço final de imóveis residenciais com base em atributos diversos como localização, área construída e qualidade geral.
+
+## 🔍 O que você vai encontrar:
+- 📊 EDA com visualizações e insights interpretáveis
+- 🧼 Tratamento completo de dados ausentes e outliers
+- 🧠 Modelos Lasso, Ridge, XGBoost e Ensemble
+- 📈 Avaliação com validação cruzada e análise de métricas
+
+## 🧠 Principais Aprendizados
+- Feature engineering impacta fortemente em modelos tabulares
+- Modelos lineares regulares são competitivos com ensembles
+- Explicabilidade é tão importante quanto performance
+
+## 📁 Organização base
+
+````
+house-of-price/
+├── data/                   # Dados originais e tratados
+├── notebooks/
+│   ├── 01_eda.ipynb
+│   ├── 02_preprocessing.ipynb
+│   ├── 03_modeling.ipynb
+│   └── 04_results.ipynb
+├── sandbox/                # Experimentos, testes e rascunhos
+├── src/                    # Funções reutilizáveis (ex: utils.py)
+├── models/                 # Modelos treinados e artefatos
+├── requirements.txt
+└── README.md
+
+```
+
+## 🚀 Como rodar
+```bash
+pip install -r requirements.txt
+jupyter notebook
