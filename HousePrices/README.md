@@ -18,11 +18,11 @@ Aplicar técnicas de aprendizado de máquina para prever o preço final de imóv
 
 ## 📁 Organização base
 
-````
+```
 HousePrice/
 ├── data/                   # Dados originais e tratados
 ├── notebooks/
-│   ├── 01_eda.ipynb
+│   ├── Eda_HP.ipynb
 │   ├── 02_preprocessing.ipynb
 │   ├── 03_modeling.ipynb
 │   └── 04_results.ipynb
@@ -37,3 +37,8 @@ HousePrice/
 ```bash
 pip install -r requirements.txt
 jupyter notebook
+```
+
+---
+
+Se quiser, posso **gerar um repositório exemplo para você clonar** ou te ajudar a transformar seu projeto atual no formato acima. Quer que eu faça isso?
