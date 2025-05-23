@@ -1,6 +1,6 @@
 # 🏠 House Prices - Previsão de Imóveis
 
-Projeto baseado no desafio [House Prices - Kaggle](https://www.kaggle.com/c/house-prices-advanced-regression-techniques), com o objetivo de prever o preço de casas em Ames, Iowa.
+Projeto baseado no desafio [House Prices - Kaggle](https://www.kaggle.com/c/house-prices-advanced-regression-techniques), com objetivo de prever o preço de casas em Ames, Iowa.
 
 ## 📌 Objetivo
 Aplicar técnicas de aprendizado de máquina para prever o preço final de imóveis residenciais com base em atributos diversos como localização, área construída e qualidade geral.
@@ -19,7 +19,7 @@ Aplicar técnicas de aprendizado de máquina para prever o preço final de imóv
 ## 📁 Organização base
 
 ````
-house-of-price/
+HousePrice/
 ├── data/                   # Dados originais e tratados
 ├── notebooks/
 │   ├── 01_eda.ipynb
@@ -28,7 +28,6 @@ house-of-price/
 │   └── 04_results.ipynb
 ├── sandbox/                # Experimentos, testes e rascunhos
 ├── src/                    # Funções reutilizáveis (ex: utils.py)
-├── models/                 # Modelos treinados e artefatos
 ├── requirements.txt
 └── README.md
 
