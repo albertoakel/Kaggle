@@ -20,7 +20,7 @@ Cada diretório pode conter:
 
 - `house-of-price/`  
   Desafio baseado em: [House Prices - Advanced Regression Techniques](https://www.kaggle.com/c/house-prices-advanced-regression-techniques)  
-  → Previsão de preços de imóveis residenciais com técnicas de regressão.
+  → Previsão de preços de imóveis residenciais com técnicas de regressão. [Ultima pontuação  :]
 
 ---
 <!--
