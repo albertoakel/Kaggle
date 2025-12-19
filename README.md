@@ -24,7 +24,7 @@ Cada diretório pode conter:
 
 ---
 <!--
-## 💡 Sugestões de Desafios Interessantes
+## 💡 Sugestões de Desafios Interessante
 
 Abaixo estão alguns desafios e datasets do Kaggle recomendados para cientistas de dados que desejam aprender, praticar ou experimentar novas técnicas:
 
