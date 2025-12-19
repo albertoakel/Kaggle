@@ -23,11 +23,9 @@ HousePrice/
 ├── data/                   # Dados originais e tratados
 ├── notebooks/
 │   ├── Eda_HP.ipynb
-│   ├── 02_preprocessing.ipynb
-│   ├── 03_modeling.ipynb
-│   └── 04_results.ipynb
+│   └── Modelling.ipynb
 ├── sandbox/                # Experimentos, testes e rascunhos
-├── src/                    # Funções reutilizáveis (ex: utils.py)
+├── src/                    # Funções reutilizáveis
 ├── requirements.txt
 └── README.md
 
