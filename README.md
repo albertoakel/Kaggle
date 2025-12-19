@@ -18,9 +18,9 @@ Cada diretório pode conter:
 
 ## ✅ Desafios Já Incluídos
 
-- `house-of-price/`  
+- **House of Price**  
   Desafio baseado em: [House Prices - Advanced Regression Techniques](https://www.kaggle.com/c/house-prices-advanced-regression-techniques)  
-  [Ultima pontuação 14/11/2025 : **0.13202**]
+  `[Ultima pontuação 14/11/2025 : 0.13202]`
 
 ---
 <!--
