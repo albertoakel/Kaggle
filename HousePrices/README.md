@@ -1,9 +1,3 @@
-Perfeito — vou **reorganizar o README.md**, **alinhar com a estrutura real do projeto** e **incluir os resultados dos modelos de forma profissional**, sem deixar o texto longo demais (bom para portfólio e Kaggle).
-
-Abaixo está uma **versão pronta para colar** no seu `README.md`.
-
----
-
 # 🏠 House Prices — Previsão de Imóveis Residenciais
 
 Projeto baseado no desafio **[House Prices – Advanced Regression Techniques (Kaggle)]**.
