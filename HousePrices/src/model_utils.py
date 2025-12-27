@@ -8,6 +8,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split, cross_val_score, KFold, RandomizedSearchCV
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.pipeline import Pipeline
+from sklearn.base import clone
 
 
 
@@ -34,13 +35,12 @@ def run_model(Xo, yo, model, nome='sem nome', p=True):
 
 
 # função validacao_cruzada_parapipeline
-def valida(Xo, yo, model, N=5):
-    print("=" * 44)
-    print(f"validação cruzada (K-Fold Cross Validation)")
-    print("=" * 44)
-
+def valida(Xo, yo, model, N=5, write=None):
+    if write==None:
+        print('Validação cruzada realizada!')
     kf = KFold(n_splits=N, shuffle=True, random_state=42)
     r2_scores = []
+
     for i, (train_idx, test_idx) in enumerate(kf.split(Xo, yo), 1):
         X_train, X_val = Xo.iloc[train_idx], Xo.iloc[test_idx]
         y_train, y_val = yo.iloc[train_idx], yo.iloc[test_idx]
@@ -48,13 +48,21 @@ def valida(Xo, yo, model, N=5):
         y_pred = model.predict(X_val)
         r2 = r2_score(y_val, y_pred)
         r2_scores.append(r2)
-        print(f"Fold {i}: R² = {r2:.4f}")
 
-    print(f"\n📊 R² médio: {np.mean(r2_scores):.4f} ± {np.std(r2_scores):.4f}")
+    if write == 'on':
+        print("=" * 44)
+        print(f"validação cruzada (K-Fold Cross Validation)")
+        print("=" * 44)
+
+        for i, r2 in enumerate(r2_scores, 1):
+            print(f"Fold {i}: R² = {r2:.4f}")
+
+        print(f"\n📊 R² médio: {np.mean(r2_scores):.4f} ± {np.std(r2_scores):.4f}")
+
     return r2_scores
 
 
-def metricas_model(y_test, y_pred, nome_modelo='Modelo'):
+def metricas_model(y_test, y_pred, nome_modelo='Modelo',write=None):
     """
     print_metricas
     """
@@ -74,15 +82,16 @@ def metricas_model(y_test, y_pred, nome_modelo='Modelo'):
     }
 
     # Imprime resultados com alinhamento
-    print('=' * 44)
-    print(f'🤖 {nome_modelo.upper()}')
-    print('=' * 44)
-    print(f"MAE:  {resultados['MAE']:>7}")
-    print(f"RMSE: {resultados['RMSE']:>6}")
-    print(f"R²:   {resultados['R²']:>6}")
+    if write=='on':
+        print('=' * 44)
+        print(f'🤖 {nome_modelo.upper()}')
+        print('=' * 44)
+        print(f"MAE:  {resultados['MAE']:>7}")
+        print(f"RMSE: {resultados['RMSE']:>6}")
+        print(f"R²:   {resultados['R²']:>6}")
 
     return resultados
 
 def pipe_models(modelo, preprocessador):
-    return Pipeline([('preprocess', preprocessador),
+    return Pipeline([('preprocess', clone(preprocessador)),
                      ('model', modelo)])
