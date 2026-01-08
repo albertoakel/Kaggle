@@ -101,6 +101,7 @@ HousePrices/
 config:
   theme: redux
   layout: dagre
+  look: neo
 ---
 flowchart TB
 subgraph s1["⚙️ Fase de Preparação"]
