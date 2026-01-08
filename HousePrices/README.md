@@ -104,7 +104,7 @@ config:
   look: neo
 ---
 flowchart TB
-subgraph s1["⚙️ Fase de Preparação"]
+ subgraph s1["⚙️ Fase de Preparação"]
         B1["Split treino/teste<br>(ANTES de decisões estatísticas)"]
         B2["Identificação de colunas<br>com muitos nulos"]
         B3@{ label: "Remoção de colunas<br>'&gt;10% nulos'<br>(base treino)" }
@@ -149,6 +149,9 @@ subgraph s1["⚙️ Fase de Preparação"]
     H --> I["📈 Gráficos & Análise"]
 
     B3@{ shape: diam}
+    classDef fase_prep fill:##f0f0f0,stroke:#f05252,color:#000
+    classDef fase_data fill:##f0f0f0,stroke:#0ea5e9,color:#000
+    classDef fase_model fill:##f0f0f0,stroke:#22c55e,color:#000
     linkStyle 1 stroke:#000000
 
     L_B_B1_0@{ curve: natural }
