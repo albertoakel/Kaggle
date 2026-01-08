@@ -95,7 +95,7 @@ HousePrices/
 ├── requirements.txt
 └── README.md
 ```
-### Pipeline do Projeto
+### Fluxograma de operação
 ```mermaid
 ---
 config:
