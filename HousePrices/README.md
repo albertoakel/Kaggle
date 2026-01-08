@@ -9,10 +9,9 @@ O objetivo é prever o **preço final de casas em Ames, Iowa**, utilizando técn
 
 Desenvolver um pipeline completo de **pré-processamento, modelagem e avaliação**, comparando modelos lineares regularizados e métodos ensemble, com foco em:
 
-* desempenho preditivo
-* controle de overfitting
-* reprodutibilidade
-* organização para portfólio profissional
+* Desempenho preditivo
+* Controle de overfitting
+* Reprodutibilidade
 
 ---
 
@@ -22,10 +21,9 @@ Desenvolver um pipeline completo de **pré-processamento, modelagem e avaliaçã
 *  **Pré-processamento robusto** (imputação, normalização, one-hot encoding)
 * **Modelos avaliados**:
 
-  * Regressão Linear
-  * Ridge e LASSO
-  * Random Forest Regressor
-  * XGBoost
+  * **[Modelos Lineares](https://github.com/albertoakel/Kaggle/blob/master/HousePrices/notebook/models_Linear.ipynb)**
+  * **[Random Forest-Ensemble](https://github.com/albertoakel/Kaggle/blob/master/HousePrices/notebook/models_Random_Forest.ipynb)**
+  * **[XGBoosting](https://github.com/albertoakel/Kaggle/blob/master/HousePrices/notebook/models_XGBoost.ipynb)**
 * **Avaliação comparativa** com MAE, RMSE e R²
 *  **Artefatos persistidos** (preprocessador e melhor modelo)
 
@@ -64,6 +62,8 @@ Avaliação realizada sobre o conjunto de teste (target transformado com `log1p`
 
 ## 📁 Estrutura do Projeto
 
+O projeto segue uma arquitetura modular, separando engenharia de dados, pré-processamento e modelagem. O preprocessamento é encapsulado em um artefato versionado (joblib) e aplicado via pipelines do scikit-learn, garantindo reprodutibilidade, prevenção de data leakage e comparação justa entre modelos.
+
 ```
 HousePrices/
 │
@@ -95,6 +95,65 @@ HousePrices/
 ├── requirements.txt
 └── README.md
 ```
+### Pipeline do Projeto
+```mermaid
+---
+config:
+  theme: redux
+  layout: dagre
+---
+flowchart TB
+subgraph s1["⚙️ Fase de Preparação"]
+        B1["Split treino/teste<br>(ANTES de decisões estatísticas)"]
+        B2["Identificação de colunas<br>com muitos nulos"]
+        B3@{ label: "Remoção de colunas<br>'&gt;10% nulos'<br>(base treino)" }
+        B4["Definição de features"]
+        B4a["Numéricas"]
+        B4b["Categóricas"]
+        B5["Criação do preprocessador<br>(ColumnTransformer)"]
+        B6["📦 Artefato joblib<br>preprocess_house_prices_v1.joblib"]
+  end
+ subgraph Persistencia["💾 Persistência de Dados"]
+        C["data/processed/"]
+        C1["X_train_final.csv"]
+        C2["X_test_final.csv"]
+        C3["y_train_final.csv"]
+        C4["y_test_final.csv"]
+  end
+ subgraph Treinamento["🤖 Fase de Modelagem"]
+        D["📓 models_[nome_do_modelo].ipynb"]
+        D1["Carrega CSVs + Preprocessador"]
+        D2["Cria Pipeline<br>(preprocess + modelo)"]
+        E["fit()"]
+        E1["preprocess.fit_transform(X_train)"]
+        F["Modelo ([--]/LR)"]
+        G["Validação Cruzada<br>(K-Fold no Treino)"]
+        H["Avaliação Final<br>(Métricas no Teste)"]
+  end
+    A["data/raw/train.csv"] --> B["preprocess_utils.py"]
+    B L_B_B1_0@-.-> B1
+    B1 --> B2
+    B2 --> B3
+    B3 --> B4 & C
+    B4 --> B4a & B4b & B5
+    B5 --> B6
+    C --> C1 & C2 & C3 & C4 & D
+    B6 -.-> D
+    D --> D1
+    D1 --> D2
+    D2 --> E
+    E --> E1
+    E1 --> F
+    F --> G & H
+    H --> I["📈 Gráficos & Análise"]
+
+    B3@{ shape: diam}
+    linkStyle 1 stroke:#000000
+
+    L_B_B1_0@{ curve: natural }
+```
+
+
 
 ---
 

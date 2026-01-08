@@ -13,7 +13,9 @@ from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
-
+''''
+Modulo responsavel pela criação artefato(joblib) pre-processado e separação das bases de treino/teste
+''''
 def main():
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     ROOT_DIR = os.path.dirname(BASE_DIR)

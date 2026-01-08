@@ -1,3 +1,4 @@
+#setub_notebook.py
 import sys, os
 
 def setup_path():

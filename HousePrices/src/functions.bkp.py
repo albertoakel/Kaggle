@@ -1,11 +1,10 @@
+#function.py
 import pandas as pd
 import numpy as np
 import math
 import matplotlib.pyplot as plt
 import seaborn as sns
 from matplotlib.colors import LinearSegmentedColormap
-from scipy.stats import pearsonr
-
 
 from scipy.stats import gaussian_kde
 
@@ -16,17 +15,11 @@ color_palette21 = [
     "#FF7C00", "#FF6400", "#FF4C00", "#FF3300", "#FF1A00", "#FF0000"
 ]
 
-color_palette16 = sns.color_palette('RdBu_r', 16)
 
-paleta=color_palette21
-
-sns.set_palette(paleta)
-
-
-def inital_describe(df, simple=False):
+def inital_describe(df,simple=False):
     """
     Realiza análise exploratória inicial do DataFrame
-
+    
     Parameters:
     df (pd.DataFrame): DataFrame a ser analisado
     """
@@ -35,7 +28,7 @@ def inital_describe(df, simple=False):
     print("📊 ANÁLISE EXPLORATÓRIA DO DATAFRAME")
     print("=" * 60)
 
-    # Informações sobre o shape dos dados
+        # Informações sobre o shape dos dados
     print(f"\n📈 DIMENSÕES DO DATASET:")
     print(f"   • {df.shape[0]} linhas")
     print(f"   • {df.shape[1]} colunas")
@@ -60,7 +53,7 @@ def inital_describe(df, simple=False):
     duplicatas = df.duplicated().sum()
     print(f"\n📝 REGISTROS DUPLICADOS:")
     print(f"   • Total: {duplicatas}")
-    print(f"   • Percentual: {(duplicatas / len(df)) * 100:.2f}%")
+    print(f"   • Percentual: {(duplicatas/len(df))*100:.2f}%")
 
     # Valores nulos
     nulos_totais = df.isnull().sum().sum()
@@ -69,12 +62,12 @@ def inital_describe(df, simple=False):
 
     print(f"\n❌ VALORES NULOS:")
     print(f"   • Total: {nulos_totais}")
-    print(f"   • Percentual: {(nulos_totais / (df.shape[0] * df.shape[1])) * 100:.2f}%")
+    print(f"   • Percentual: {(nulos_totais/(df.shape[0] * df.shape[1]))*100:.2f}%")
 
     if not colunas_com_nulos.empty:
         print(f"\n📊 COLUNAS COM VALORES NULOS:")
         for coluna, nulos in colunas_com_nulos.items():
-            percentual = (nulos / len(df)) * 100
+            percentual = (nulos/len(df)) * 100
             print(f"   • {coluna}: {nulos} nulos ({percentual:.2f}%)")
     else:
         print(f"   ✓ Nenhuma coluna com valores nulos")
@@ -90,13 +83,14 @@ def inital_describe(df, simple=False):
                 print(f"Quantidade de valores únicos: {df[col].nunique()}")
                 print(f"Valores: {df[col].unique()}")
 
+
         # Estatísticas básicas para colunas numéricas
         print(f"\n📊 ESTATÍSTICAS BÁSICAS (colunas numéricas):")
         colunas_numericas = df.select_dtypes(include=['number']).columns
         if len(colunas_numericas) > 0:
             display(df[colunas_numericas].describe().T)
-            # print(df[colunas_numericas].describe().T.round(2))
-            # print(df[colunas_numericas].describe().T.round(2).to_string())
+            #print(df[colunas_numericas].describe().T.round(2))
+            #print(df[colunas_numericas].describe().T.round(2).to_string())
 
         else:
             print("   • Nenhuma coluna numérica encontrada")
@@ -104,7 +98,6 @@ def inital_describe(df, simple=False):
     print("\n" + "=" * 60)
     print("✅ ANÁLISE CONCLUÍDA")
     print("=" * 60)
-
 
 def remove_outliers_iqr(data, target, threshold=1.5, verbose=True):
     """
@@ -256,7 +249,7 @@ def mult_plt(df,kind='hist', ncols=3, max_bins=15, figsize=(16, 24),min_boxplot=
             perc = counts / len(temp) * 100
 
             ax[row, col_idx].bar(
-                edges[:-1], perc, width=np.diff(bins), align=align,color=color_palette16[3] ,
+                edges[:-1], perc, width=np.diff(bins), align=align,color=color_palette21[3] ,
                 edgecolor='black'
             )
             ax[row, col_idx].set_title(col)
@@ -279,7 +272,7 @@ def mult_plt(df,kind='hist', ncols=3, max_bins=15, figsize=(16, 24),min_boxplot=
                 )
 
         elif kind == "box":
-            sns.boxplot(x=temp, color=color_palette16[14], ax=ax[row, col_idx])
+            sns.boxplot(x=temp, color=color_palette21[14], ax=ax[row, col_idx])
             ax[row, col_idx].set_title(col)
             ax[row, col_idx].set_xlabel(col)
             ax[row, col_idx].set_ylabel("")
@@ -337,7 +330,7 @@ def mult_plt2(df, kind='hist', ncols=3, max_bins=15, figsize=(16, 24),
                 return candidate
         return data_range / max_bins
 
-    # Separar nome das colunas numéricas e categóricas
+    # Separar colunas numéricas e categóricas
     num_cols = df.select_dtypes(include=[np.number]).columns.tolist()
     cat_cols = df.select_dtypes(include=['object', 'category']).columns.tolist()
 
@@ -381,12 +374,7 @@ def mult_plt2(df, kind='hist', ncols=3, max_bins=15, figsize=(16, 24),
             perc = counts / len(temp) * 100
 
             ax_.bar(edges[:-1], perc, width=np.diff(bins), align=align,
-                    color=paleta[2], edgecolor='black')
-            #print(col,df[col].mean())
-            ax_.axvline(df[col].mean(),color='red', linestyle='--', label=f'Média: {df[col].mean():.2f}')
-            ax_.axvline(df[col].median(), color='green', linestyle='--',label=f'Mediana: {df[col].median():.2f}')
-
-            ax_.legend()
+                    color=color_palette21[2], edgecolor='black')
             ax_.set_xlabel(col)
             ax_.set_ylabel('Percentual (%)')
             ax_.set_xticks(bins[:-1])
@@ -395,8 +383,7 @@ def mult_plt2(df, kind='hist', ncols=3, max_bins=15, figsize=(16, 24),
 
             # Adiciona texto e registra dados
             for i in range(len(counts)):
-                fs = max(6, 10- len(counts) // 8)
-                fs=6
+                fs = max(6, 10 - len(counts) // 5)
 
                 bar_center = bins[i] if align == 'center' else bins[i] + (bins[i + 1] - bins[i]) / 2
                 ax_.text(bar_center, perc[i], f'{perc[i]:.1f}%',
@@ -415,7 +402,7 @@ def mult_plt2(df, kind='hist', ncols=3, max_bins=15, figsize=(16, 24),
             counts = temp.value_counts()
             perc = counts / len(temp) * 100
 
-            ax_.bar(counts.index.astype(str), perc, color=paleta[4], edgecolor='black')
+            ax_.bar(counts.index.astype(str), perc, color=color_palette21[4], edgecolor='black')
             ax_.set_xlabel(col)
             ax_.set_ylabel('Percentual (%)')
             ax_.tick_params(axis='x', rotation=45)
@@ -432,7 +419,7 @@ def mult_plt2(df, kind='hist', ncols=3, max_bins=15, figsize=(16, 24),
 
         # --- Boxplots numéricos ---
         elif kind == "box":
-            sns.boxplot(x=temp, color=color_palette16[14], ax=ax_)
+            sns.boxplot(x=temp, color=color_palette21[14], ax=ax_)
             ax_.set_xlabel(col)
             ax_.set_ylabel("")
 
@@ -481,7 +468,7 @@ def correlation_bar(df, target, threshold=None, plot_type='all'):
 
     # --- Custom colormap ---
     cmap60 = LinearSegmentedColormap.from_list(
-        "custom_21", color_palette16, N=60
+        "custom_21", color_palette21, N=60
     )
 
     # --- Sorting by target ---
@@ -494,9 +481,7 @@ def correlation_bar(df, target, threshold=None, plot_type='all'):
         dfcm[dfcm >= 0.99] = pd.NA
 
     # --- Correlation with target variable ---
-    corr_target = dfcm[target].drop(target).sort_values(ascending=False)
-    #corr_target = corr[target].drop(target).sort_values(ascending=False)
-
+    corr_target = corr[target].drop(target).sort_values(ascending=False)
     cmap60_bar = [cmap60(norm(value)) for value in corr_target.values]
 
     # --- Plotting ---
@@ -546,9 +531,9 @@ def correlation_bar(df, target, threshold=None, plot_type='all'):
             data=bar_data,
             x='correlation',
             y='features',
-            #hue='hue',  # Especifica hue
+            hue='hue',  # Especifica hue
             palette=cmap60_bar,
-            #legend=False,  # Remove a legenda do hue
+            legend=False,  # Remove a legenda do hue
             ax=ax
         )
         ax.set_title(
@@ -590,8 +575,8 @@ def scatter_by_category(df, x_var, y_var, hue_var, category_var,
     n_categories = len(categories)
     n_hue = df[hue_var].nunique()
 
-    indices = np.linspace(2, len(color_palette16) - 3, n_hue, dtype=int)
-    custom_palette = [color_palette16[i] for i in indices]
+    indices = np.linspace(2, len(color_palette21) - 3, n_hue, dtype=int)
+    custom_palette = [color_palette21[i] for i in indices]
 
     # Calcular número de linhas
     nrows = math.ceil(n_categories / ncols)
@@ -718,8 +703,8 @@ def bar_bar_cat(df, cat_1, cat_2, altura=6):
     # Criar gráfico com seaborn
     n_hue = df[cat_2].nunique()
 
-    indices = np.linspace(2, len(color_palette16) - 3, n_hue, dtype=int)
-    custom_palette = [color_palette16[i] for i in indices]
+    indices = np.linspace(2, len(color_palette21) - 3, n_hue, dtype=int)
+    custom_palette = [color_palette21[i] for i in indices]
     figsize = [16, 16]
     figsize[1] = round(altura)
 
@@ -766,234 +751,3 @@ def bar_bar_cat(df, cat_1, cat_2, altura=6):
     plt.show()
 
     return contingency_count, contingency_pct
-
-
-def scatterplot_bairro(x1, x2, x3, y, df, hue_var=None,savefilename=None):
-    """
-    Versão avançada com opção de variável para cor (hue) e retorno de estatísticas
-
-    Parâmetros:
-    x1, x2, x3: variáveis para os eixos x dos gráficos
-    y: variável para o eixo y (comum a todos os gráficos)
-    df: DataFrame com os dados
-    hue_var: variável para colorir os pontos (opcional)
-
-    Retorna:
-    tuple: (stats_x1, stats_x2, stats_x3) - estatísticas de cada relação
-    """
-
-    # Definindo a paleta de cores
-    color_palette = sns.color_palette('RdBu_r', 16)
-    sns.set_palette(color_palette)
-
-    # Criando a figura
-    fig, axes = plt.subplots(1, 3, figsize=(22, 6))
-
-    # Configurações dos gráficos
-    configs = [
-        {'x': x1, 'title': f'{x1} vs {y}', 'color': color_palette[0]},
-        {'x': x2, 'title': f'{x2} vs {y}', 'color': color_palette[8]},
-        {'x': x3, 'title': f'{x3} vs {y}', 'color': color_palette[15]}
-    ]
-
-    # Lista para armazenar as estatísticas
-    estatisticas = []
-
-    for i, config in enumerate(configs):
-        ax = axes[i]
-        x_var = config['x']
-
-        # CORREÇÃO: Remover linhas onde qualquer uma das variáveis é NaN
-        dados_validos = df[[x_var, y]].dropna()
-
-        if len(dados_validos) < 2:
-            print(f"Aviso: Dados insuficientes para {x_var} vs {y}")
-            stats = {
-                'variavel_x': x_var,
-                'variavel_y': y,
-                'correlacao': np.nan,
-                'p_valor': np.nan,
-                'r_quadrado': np.nan,
-                'coef_angular': np.nan,
-                'intercepto': np.nan,
-                'equacao': "Dados insuficientes",
-                'n_observacoes': len(dados_validos)
-            }
-        else:
-            # Calcular estatísticas com dados válidos
-            x_vals = dados_validos[x_var].values
-            y_vals = dados_validos[y].values
-
-            correlacao, p_valor = pearsonr(x_vals, y_vals)
-            coef_angular, intercepto = np.polyfit(x_vals, y_vals, 1)
-            r_quadrado = correlacao ** 2
-
-            # Armazenar estatísticas
-            stats = {
-                'variavel_x': x_var,
-                'variavel_y': y,
-                'correlacao': correlacao,
-                'p_valor': p_valor,
-                'r_quadrado': r_quadrado,
-                'coef_angular': coef_angular,
-                'intercepto': intercepto,
-                'equacao': f"y = {coef_angular:.4f}x + {intercepto:.4f}",
-                'n_observacoes': len(dados_validos)
-            }
-
-        estatisticas.append(stats)
-
-        # Criar scatterplot com ou sem hue
-        if hue_var:
-            # Para hue, também precisamos remover NaNs da variável hue
-            dados_plot = df[[x_var, y, hue_var]].dropna()
-            scatter = sns.scatterplot(
-                data=dados_plot,
-                x=x_var,
-                y=y,
-                hue=hue_var,
-                palette='RdBu_r',
-                s=100,
-                ax=ax
-            )
-            # Adicionar legenda se houver hue
-            ax.legend(title=hue_var, title_fontsize=10)
-        else:
-            scatter = sns.scatterplot(
-                data=df,
-                x=x_var,
-                y=y,
-                color=config['color'],
-                s=100,
-                ax=ax
-            )
-
-        # Linha de regressão apenas se houver dados suficientes
-        if len(dados_validos) >= 2:
-            sns.regplot(
-                data=df,
-                x=x_var,
-                y=y,
-                scatter=False,
-                line_kws={'color': 'black', 'linestyle': '--', 'alpha': 0.7},
-                ax=ax
-            )
-
-        # # Adicionar estatísticas no gráfico (se disponíveis)
-        # if not np.isnan(stats['correlacao']):
-        #     texto_stats = f"r = {stats['correlacao']:.3f}\nr² = {stats['r_quadrado']:.3f}\np = {stats['p_valor']:.3f}\nn = {stats['n_observacoes']}"
-        #     ax.text(0.05, 0.95, texto_stats, transform=ax.transAxes,
-        #             fontsize=10, verticalalignment='top',
-        #             bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
-        # else:
-        #     ax.text(0.05, 0.95, "Dados insuficientes", transform=ax.transAxes,
-        #             fontsize=10, verticalalignment='top',
-        #             bbox=dict(boxstyle='round', facecolor='yellow', alpha=0.8))
-
-        # Anotações dos bairros
-        for j, row in df.iterrows():
-            # Verificar se os dados existem antes de annotar
-            if not (pd.isna(row[x_var]) or pd.isna(row[y])):
-                ax.annotate(
-                    row['Bairro'],
-                    (row[x_var], row[y]),
-                    xytext=(8, 8),
-                    textcoords='offset points',
-                    fontsize=9,
-                    alpha=0.8)
-
-        # Configurações do gráfico
-        ax.set_title(config['title'], fontsize=14, pad=20)
-        ax.set_xlabel(x_var, fontsize=12, labelpad=10)
-        ax.set_ylabel(y, fontsize=12, labelpad=10)
-        ax.grid(True, alpha=0.2)
-
-    plt.tight_layout()
-
-    # Salva apenas se um nome foi fornecido
-    if savefilename is not None:
-        # Garante extensão .png
-        filename = savefilename
-        if not filename.lower().endswith('.png'):
-            filename += '.png'
-        plt.savefig(filename, dpi=300, bbox_inches='tight')
-        print(f"Gráfico salvo como: {filename}")
-
-    plt.show()
-    # Retornar as estatísticas
-    return estatisticas[0], estatisticas[1], estatisticas[2]
-
-
-# Função auxiliar para imprimir estatísticas de forma organizada
-import numpy as np
-
-def print_estatisticas(*stats_list):
-    """Imprime as estatísticas de forma organizada.
-       Aceita 0..N dicionários contendo as chaves esperadas.
-    """
-    if len(stats_list) == 0:
-        print("Nenhuma estatística fornecida.")
-        return
-
-    print("=" * 60)
-    print("ESTATÍSTICAS DAS RELAÇÕES")
-    print("=" * 60)
-
-    for i, stats in enumerate(stats_list, 1):
-        print(f"\n--- Relação {i} ---")
-        if not stats or not isinstance(stats, dict):
-            print("Entrada inválida (esperado dicionário). Pulando.")
-            continue
-
-        var_x = stats.get('variavel_x', '<x?>')
-        var_y = stats.get('variavel_y', '<y?>')
-        print(f"{var_x} vs {var_y}")
-
-        n_obs = stats.get('n_observacoes')
-        if n_obs is not None:
-            print(f"Observações válidas: {n_obs}")
-        else:
-            print("Observações válidas: N/D")
-
-        corr = stats.get('correlacao')
-        # trata None e NaN
-        if corr is None or (isinstance(corr, float) and np.isnan(corr)):
-            print("Dados insuficientes para cálculo de estatísticas")
-            continue
-
-        p_valor = stats.get('p_valor', np.nan)
-        r2 = stats.get('r_quadrado', np.nan)
-        coef = stats.get('coef_angular', np.nan)
-        intercepto = stats.get('intercepto', np.nan)
-        equacao = stats.get('equacao')
-
-        # Se não houver equação dada, montamos uma simples
-        if not equacao:
-            try:
-                equacao = f"y = {coef:.4g}x + {intercepto:.4g}"
-            except Exception:
-                equacao = "equação não disponível"
-
-        print(f"Correlação (r): {corr:.4f}")
-        print(f"R-quadrado (r²): {r2:.4f}")
-        print(f"Valor-p: {p_valor:.4f}")
-        print(f"Equação da reta: {equacao}")
-        print(f"Coeficiente angular: {coef:.4f}")
-        print(f"Intercepto: {intercepto:.4f}")
-
-        # Interpretação da correlação
-        r_abs = abs(corr)
-        if r_abs >= 0.8:
-            força = "MUITO FORTE"
-        elif r_abs >= 0.6:
-            força = "FORTE"
-        elif r_abs >= 0.4:
-            força = "MODERADA"
-        elif r_abs >= 0.2:
-            força = "FRACA"
-        else:
-            força = "MUITO FRACA"
-
-        direcao = "POSITIVA" if corr > 0 else "NEGATIVA"
-        significancia = "ESTATISTICAMENTE SIGNIFICATIVA" if (isinstance(p_valor, (int,float)) and p_valor < 0.05) else "NÃO SIGNIFICATIVA"
-        print(f"Interpretação: {força} correlação {direcao} ({significancia})")
