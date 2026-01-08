@@ -104,6 +104,7 @@ config:
   look: neo
 ---
 flowchart TB
+ subgraph s1["⚙️ Preparacao"]
         B1["Split treino/teste<br>(ANTES de decisões estatísticas)"]
         B2["Identificação de colunas<br>com muitos nulos"]
         B3@{ label: "Remoção de colunas<br>'&gt;10% nulos'<br>(base treino)" }
@@ -112,13 +113,15 @@ flowchart TB
         B4b["Categóricas"]
         B5["Criação do preprocessador<br>(ColumnTransformer)"]
         B6["📦 Artefato joblib<br>preprocess_house_prices_v1.joblib"]
- 
+  end
+ subgraph Persistencia["💾 Persistência de Dados"]
         C["data/processed/"]
         C1["X_train_final.csv"]
         C2["X_test_final.csv"]
         C3["y_train_final.csv"]
         C4["y_test_final.csv"]
- 
+  end
+ subgraph Treinamento[" "]
         D["📓 models_[nome_do_modelo].ipynb"]
         D1["Carrega CSVs + Preprocessador"]
         D2["Cria Pipeline<br>(preprocess + modelo)"]
@@ -127,7 +130,7 @@ flowchart TB
         F["Modelo ([--]/LR)"]
         G["Validação Cruzada<br>(K-Fold no Treino)"]
         H["Avaliação Final<br>(Métricas no Teste)"]
-
+  end
     A["data/raw/train.csv"] --> B["preprocess_utils.py"]
     B L_B_B1_0@-.-> B1
     B1 --> B2
@@ -146,7 +149,10 @@ flowchart TB
     H --> I["📈 Gráficos & Análise"]
 
     B3@{ shape: diam}
-    linkStyle 1 stroke:#000000
+    classDef fase_prep fill:##f0f0f0,stroke:#f05252,color:#000
+    classDef fase_data fill:##f0f0f0,stroke:#0ea5e9,color:#000
+    classDef fase_model fill:##f0f0f0,stroke:#22c55e,color:#000
+    linkStyle 1 stroke:#000000,fill:none
 
     L_B_B1_0@{ curve: natural }
 ```
