@@ -50,16 +50,6 @@ Avaliação realizada sobre o conjunto de teste (target transformado com `log1p`
 
 ---
 
-## 🧠 Principais Aprendizados
-
-* Feature engineering e pré-processamento influenciam mais que o algoritmo em si
-* Modelos lineares regularizados são fortes baselines
-* XGBoost apresentou o melhor equilíbrio entre viés e variância
-* Organização do pipeline é essencial para evitar *data leakage*
-* Persistir preprocessadores facilita inferência e deploy
-
----
-
 ## 📁 Estrutura do Projeto
 
 O projeto segue uma arquitetura modular, separando engenharia de dados, pré-processamento e modelagem. O preprocessamento é encapsulado em um artefato versionado (joblib) e aplicado via pipelines do scikit-learn, garantindo reprodutibilidade, prevenção de data leakage e comparação justa entre modelos.
@@ -158,7 +148,6 @@ flowchart TB
 ```
 
 
-
 ---
 
 ## 🚀 Como executar o projeto
@@ -181,10 +170,3 @@ jupyter notebook
 python src/preprocess_utils.py
 ```
 
----
-
-## 📌 Observações Finais
-
-Este projeto foi estruturado com foco em **boas práticas de ciência de dados**, servindo tanto como **benchmark técnico** quanto como **material de portfólio profissional**.
-
----
