@@ -99,7 +99,7 @@ HousePrices/
 ```mermaid
 ---
 config:
-  theme: redux
+  theme: base
   layout: dagre
   look: neo
 ---
