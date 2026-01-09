@@ -3,6 +3,7 @@
 Projeto baseado no desafio **[House Prices – Advanced Regression Techniques (Kaggle)]**.
 O objetivo é prever o **preço final de casas em Ames, Iowa**, utilizando técnicas modernas de **Machine Learning para dados tabulares**.
 
+
 ---
 
 ## 📌 Objetivo do Projeto
@@ -26,6 +27,31 @@ Desenvolver um pipeline completo de **pré-processamento, modelagem e avaliaçã
   * **[XGBoosting](https://github.com/albertoakel/Kaggle/blob/master/HousePrices/notebook/models_XGBoost.ipynb)**
 * **Avaliação comparativa** com MAE, RMSE e R²
 *  **Artefatos persistidos** (preprocessador e melhor modelo)
+
+
+### Principais Highlights do Projeto
+
+* **Pré-processamento padronizado e reutilizável:** utilização do `preprocessador_v0.joblib`, garantindo consistência no tratamento dos dados em todos os experimentos, reprodutibilidade dos resultados e prevenção de *data leakage*.
+
+* **Transformação robusta das variáveis:**
+
+  * variáveis numéricas tratadas com imputação por mediana e padronização;
+  * variáveis categóricas convertidas via *One-Hot Encoding*;
+  * todo o fluxo encapsulado em um único `ColumnTransformer`, assegurando coerência entre treino, validação e inferência.
+
+* **Pipelines integrados por modelo:** cada algoritmo é treinado dentro de um pipeline único, integrando automaticamente o pré-processamento e a etapa de regressão, reduzindo erros experimentais e facilitando comparações justas.
+
+* **Avaliação sistemática via validação cruzada (K-Fold):** análise do desempenho médio (R²) e da variabilidade entre *folds*, permitindo avaliar não apenas acurácia, mas também **estabilidade e capacidade de generalização**.
+
+* **Comparação entre múltiplas famílias de modelos:**
+
+  * **Modelos Lineares**: Linear Regression, Ridge e Lasso (configurações padrão e ajustadas), usados como baseline interpretável e referência de estabilidade;
+  * **Random Forest**: versões padrão e ajustadas, explorando não linearidades e interações entre variáveis;
+  * **XGBoost**: três configurações progressivamente regularizadas, focadas em maximizar desempenho e controle de *overfitting*.
+
+* **Avaliação padronizada e reutilizável:** uso das funções auxiliares `metricas_model()` e `valida()` para uniformizar o cálculo de MAE, RMSE e R², simplificando a comparação objetiva entre diferentes estratégias de modelagem.
+
+* **Evolução clara de complexidade e desempenho:** a progressão dos modelos evidencia ganhos consistentes ao sair de abordagens lineares para ensembles baseados em árvores e, finalmente, para *boosting* regularizado, culminando no melhor compromisso entre **erro, estabilidade e generalização** com o XGBoost ajustado
 
 ---
 
