@@ -4,7 +4,6 @@
 Projeto baseado no desafio **[Titanic: Machine Learning from Disaster (Kaggle)]**.
 O objetivo é prever **a sobrevivência dos passageiros do Titanic** a partir de características demográficas, socioeconômicas e de viagem, utilizando técnicas clássicas e modernas de **Machine Learning para classificação supervisionada**.
 
----
 
 ## 📌 Objetivo do Projeto
 
