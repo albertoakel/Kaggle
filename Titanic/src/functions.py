@@ -13,14 +13,11 @@ color_palette21 = [
     "#004C4C", "#006666", "#008080", "#199191", "#29A3A3",
     "#40B5B5", "#55C7C7", "#66D9D9", "#80ECEC", "#99FFFF",
     "#FFD580", "#FFC460", "#FFB240", "#FFA020", "#FF8E00",
-    "#FF7C00", "#FF6400", "#FF4C00", "#FF3300", "#FF1A00", "#FF0000"
-]
+    "#FF7C00", "#FF6400", "#FF4C00", "#FF3300", "#FF1A00", "#FF0000"]
 
 color_palette16 = sns.color_palette('RdBu_r', 16)
 
-paleta=color_palette21
-
-sns.set_palette(paleta)
+sns.set_palette(color_palette21 )
 
 
 def inital_describe(df, simple=False):
@@ -580,7 +577,7 @@ def correlation_bar(df, target, threshold=None, plot_type='all'):
 
 def scatter_by_category(df, x_var, y_var, hue_var, category_var,
                         ncols=3, figsize=[16, 16], palette=None,
-                        suptitle=None, alpha=0.6, s=45):
+                        suptitle=None, alpha=0.6, s=45,category_name=None):
     """
     Gera scatterplots de x_var vs y_var com hue_var, separados por category_var.
     """
@@ -644,6 +641,13 @@ def scatter_by_category(df, x_var, y_var, hue_var, category_var,
 
 
         # Configurar título e labels com informações detalhadas
+        print(idx,category )
+        if category_name is None:
+            None
+        else:
+            category=category_name[idx]
+
+
         ax.set_title(f"{category}\nN={len(temp_df)} ({hue_summary})",
         fontsize=11, weight='bold')  # Reduzi para 11 para caber melhor
         ax.set_xlabel(x_var)
@@ -699,73 +703,123 @@ def scatter_by_category(df, x_var, y_var, hue_var, category_var,
 
     return df_resultados
 
-
-def bar_bar_cat(df, cat_1, cat_2, altura=6):
+def bar_bar_cat(df, cat_1, cat_2=None, h=6, paleta=None):
     """
-    Compara a distribuição de duas categorias quaisquer usando seaborn.
+    Gráfico de barras categórico.
+
+    - 1 categoria: distribuição simples (percentual)
+    - 2 categorias: distribuição percentual condicional
+
+    - h altura(tamanho) da figura
+    - paleta de cor
     """
-    # Calcular dados
-    contingency_count = pd.crosstab(df[cat_1], df[cat_2])
-    contingency_pct = pd.crosstab(df[cat_1], df[cat_2], normalize='index') * 100
 
-    # Preparar dados para seaborn
-    df_plot = contingency_pct.reset_index()
-    df_plot = pd.melt(df_plot, id_vars=[cat_1],
-                      value_vars=contingency_pct.columns,
-                      var_name=cat_2,
-                      value_name='percentual')
+    if paleta is None:
+        paleta = color_palette21
 
-    # Criar gráfico com seaborn
-    n_hue = df[cat_2].nunique()
+    figsize = (10, h)
 
-    indices = np.linspace(2, len(color_palette16) - 3, n_hue, dtype=int)
-    custom_palette = [color_palette16[i] for i in indices]
-    figsize = [16, 16]
-    figsize[1] = round(altura)
+    # ==================================================
+    # CASO 1 — APENAS UMA CATEGORIA
+    # ==================================================
+    if cat_2 is None:
 
-    plt.figure(figsize=figsize)
-    ax = sns.barplot(data=df_plot, x=cat_1, y='percentual', hue=cat_2,
-                     palette=custom_palette, alpha=0.8)
+        contagem = df[cat_1].value_counts()
+        percentual = df[cat_1].value_counts(normalize=True) * 100
 
-    plt.title(f'Distribuição de {cat_2} por {cat_1}', fontsize=14, weight='bold')
-    plt.xlabel(cat_1)
-    plt.ylabel('Percentual (%)')
-    plt.legend(title=cat_2, bbox_to_anchor=(1.05, 1), loc='upper left')
+        df_plot = pd.DataFrame({
+            cat_1: contagem.index,
+            'count': contagem.values,
+            'percentual': percentual.values})
+
+        n_bars = df_plot.shape[0]
+        indices = np.linspace(5, len(paleta) - 6, n_bars, dtype=int)
+        custom_palette = [paleta[i] for i in indices]
+
+
+        plt.figure(figsize=figsize)
+        ax = sns.barplot(data=df_plot,
+                         x=cat_1,
+                         y='percentual',
+                         palette=custom_palette,
+                         edgecolor='black')
+
+        ax.set_title(f'Distribuição de {cat_1}', fontsize=14, weight='bold')
+        ax.set_xlabel(cat_1)
+        ax.set_ylabel('Percentual (%)')
+
+        for i, bar in enumerate(ax.containers[0]):
+            h = bar.get_height()
+            ax.text(
+                bar.get_x() + bar.get_width() / 2,
+                h + 0.5,
+                f'{df_plot["count"].iloc[i]} ({h:.1f}%)',
+                ha='center',
+                va='bottom',
+                fontsize=9
+            )
+
+        plt.tight_layout()
+        plt.show()
+        return df_plot
+
+    # ==================================================
+    # CASO 2 — DUAS CATEGORIAS
+    # ==================================================
+    contagem = pd.crosstab(df[cat_1], df[cat_2])
+    percentual = pd.crosstab(df[cat_1], df[cat_2], normalize='index') * 100
+
+    df_plot = percentual.reset_index()
+    df_plot = pd.melt(
+        df_plot,
+        id_vars=[cat_1],
+        value_vars=percentual.columns,
+        var_name=cat_2,
+        value_name='percentual'
+    )
+
+    n_hue = percentual.shape[1]
+    #indices = np.linspace(2, len(paleta) - 3, n_hue, dtype=int)
+    indices = np.linspace(3, len(paleta) - 6, n_hue , dtype=int)
+
+    custom_palette = [paleta[i] for i in indices]
+
+    plt.figure(figsize=(16, h))
+
+    ax = sns.barplot(
+        data=df_plot,
+        x=cat_1,
+        y='percentual',
+        hue=cat_2,
+        palette=custom_palette,
+        edgecolor='black'
+    )
+
+    ax.set_title(f'Distribuição de {cat_2} por {cat_1}', fontsize=14, weight='bold')
+    ax.set_xlabel(cat_1)
+    ax.set_ylabel('Percentual (%)')
+    ax.legend(title=cat_2, bbox_to_anchor=(1.05, 1), loc='upper left')
     plt.xticks(rotation=45)
 
-    # Adicionar labels
-    categories = contingency_count.index
-
+    # Labels
     for i, container in enumerate(ax.containers):
-        cat_2_val = contingency_pct.columns[i]
-
         for j, bar in enumerate(container):
-            if j < len(categories):
-                cat_1_val = categories[j]
-                height = bar.get_height()
-
-                if height > 0:
-                    count = contingency_count.loc[cat_1_val, cat_2_val]
-                    if n_hue <= 3:
-                        label_text = f'{count} ({height:.1f}%)'
-                        ax.text(bar.get_x() + bar.get_width() / 2, height + 0.5,
-                                label_text, ha='center', va='bottom',
-                                fontsize=8)
-                    elif n_hue == 4:
-                        label_text = f'{count} ({height:.1f}%)'
-                        ax.text(bar.get_x() + bar.get_width() / 2, height + 0.5,
-                                label_text, ha='center', va='bottom',
-                                fontsize=6)
-                    else:
-                        label_text = f'{height:.1f}%'
-                        ax.text(bar.get_x() + bar.get_width() / 2, height + 0.5,
-                                label_text, ha='center', va='bottom',
-                                fontsize=6)
+            h = bar.get_height()
+            if h > 0:
+                count = contagem.iloc[j, i]
+                ax.text(
+                    bar.get_x() + bar.get_width() / 2,
+                    h + 0.5,
+                    f'{count} ({h:.1f}%)',
+                    ha='center',
+                    va='bottom',
+                    fontsize=8
+                )
 
     plt.tight_layout()
     plt.show()
 
-    return contingency_count, contingency_pct
+    return contagem, percentual
 
 
 def scatterplot_bairro(x1, x2, x3, y, df, hue_var=None,savefilename=None):
