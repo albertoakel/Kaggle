@@ -291,7 +291,7 @@ def mult_plt(df,kind='hist', ncols=3, max_bins=15, figsize=(16, 24),min_boxplot=
 
 
 def mult_plt2(df, kind='hist', ncols=3, max_bins=15, figsize=(16, 24),
-             min_boxplot=6, suptitle=None):
+             min_boxplot=6, paleta=None,suptitle=None):
 
     """
     Gera automaticamente visualizações (histogramas, boxplots ou histogramas categóricos)
@@ -321,6 +321,9 @@ def mult_plt2(df, kind='hist', ncols=3, max_bins=15, figsize=(16, 24),
         DataFrame contendo as colunas:
         ["feature", "x_value", "percentual", "contagem"]
     """
+
+    if paleta is None:
+        paleta = color_palette21
 
     def nice_bin_width(data_range: float, max_bins: int) -> float:
         """Calcula largura de bin 'redonda' para histogramas numéricos."""
@@ -412,7 +415,7 @@ def mult_plt2(df, kind='hist', ncols=3, max_bins=15, figsize=(16, 24),
             counts = temp.value_counts()
             perc = counts / len(temp) * 100
 
-            ax_.bar(counts.index.astype(str), perc, color=paleta[4], edgecolor='black')
+            ax_.bar(counts.index.astype(str), perc, color=paleta[5], edgecolor='black')
             ax_.set_xlabel(col)
             ax_.set_ylabel('Percentual (%)')
             ax_.tick_params(axis='x', rotation=45)
@@ -429,7 +432,7 @@ def mult_plt2(df, kind='hist', ncols=3, max_bins=15, figsize=(16, 24),
 
         # --- Boxplots numéricos ---
         elif kind == "box":
-            sns.boxplot(x=temp, color=color_palette16[14], ax=ax_)
+            sns.boxplot(y=temp, color=paleta[2], ax=ax_)
             ax_.set_xlabel(col)
             ax_.set_ylabel("")
 
@@ -446,7 +449,7 @@ def mult_plt2(df, kind='hist', ncols=3, max_bins=15, figsize=(16, 24),
     return out_data
 
 
-def correlation_bar(df, target, threshold=None, plot_type='all'):
+def correlation_bar(df, target, threshold=None, paleta=None,metodo=None,plot_type='all'):
     """
     Plot heatmap and/or barplot of correlation with target variable.
 
@@ -468,9 +471,15 @@ def correlation_bar(df, target, threshold=None, plot_type='all'):
     --------
     tuple
         Ordered correlation matrix and target correlation series
+
     """
+    if paleta is None:
+        paleta = color_palette21[::-1]  #[::-1] padrçao inverso de cores
+    if metodo is None:
+        metodo=pearson
+
     # --- Correlation ---
-    corr = df.corr(numeric_only=True)
+    corr = df.corr(numeric_only=True,method=metodo)
 
     # --- Normalization ---
     vmin, vmax = -1, 1
@@ -478,7 +487,7 @@ def correlation_bar(df, target, threshold=None, plot_type='all'):
 
     # --- Custom colormap ---
     cmap60 = LinearSegmentedColormap.from_list(
-        "custom_21", color_palette16, N=60
+        "custom_21", paleta, N=60
     )
 
     # --- Sorting by target ---
@@ -520,7 +529,7 @@ def correlation_bar(df, target, threshold=None, plot_type='all'):
             vmin=vmin,
             vmax=vmax,
             linewidths=0.4,
-            cbar_kws={'label': 'Pearson Correlation'},
+            cbar_kws={'label': metodo.title() +' Correlation'},
             ax=ax
         )
         ax.set_title(
@@ -553,7 +562,7 @@ def correlation_bar(df, target, threshold=None, plot_type='all'):
             fontsize=14,
             weight='bold'
         )
-        ax.set_xlabel("Pearson Correlation Coefficient")
+        ax.set_xlabel(metodo.title()+" Correlation Coefficient")
 
         # Color bar
         sm = plt.cm.ScalarMappable(cmap=cmap60, norm=norm)
@@ -586,6 +595,9 @@ def scatter_by_category(df, x_var, y_var, hue_var, category_var,
     categories = df[category_var].unique()
     n_categories = len(categories)
     n_hue = df[hue_var].nunique()
+
+    maxY=df[y_var].max()
+    minY=df[y_var].min()
 
     indices = np.linspace(2, len(color_palette21) - 3, n_hue, dtype=int)
     custom_palette = [color_palette21[i] for i in indices]
@@ -641,7 +653,7 @@ def scatter_by_category(df, x_var, y_var, hue_var, category_var,
 
 
         # Configurar título e labels com informações detalhadas
-        print(idx,category )
+        #print(idx,category )
         if category_name is None:
             None
         else:
@@ -652,6 +664,7 @@ def scatter_by_category(df, x_var, y_var, hue_var, category_var,
         fontsize=11, weight='bold')  # Reduzi para 11 para caber melhor
         ax.set_xlabel(x_var)
         ax.set_ylabel(y_var)
+        ax.set_ylim([minY,maxY])
 
         # Melhorar legenda (manter apenas no primeiro gráfico)
         if idx > 0:
@@ -703,7 +716,7 @@ def scatter_by_category(df, x_var, y_var, hue_var, category_var,
 
     return df_resultados
 
-def bar_bar_cat(df, cat_1, cat_2=None, h=6, paleta=None):
+def bar_bar_cat(df, cat_1, cat_2=None, paleta=None,figsize=(12,6)):
     """
     Gráfico de barras categórico.
 
@@ -717,7 +730,7 @@ def bar_bar_cat(df, cat_1, cat_2=None, h=6, paleta=None):
     if paleta is None:
         paleta = color_palette21
 
-    figsize = (10, h)
+    #figsize = (10, h)
 
     # ==================================================
     # CASO 1 — APENAS UMA CATEGORIA
@@ -784,7 +797,7 @@ def bar_bar_cat(df, cat_1, cat_2=None, h=6, paleta=None):
 
     custom_palette = [paleta[i] for i in indices]
 
-    plt.figure(figsize=(16, h))
+    plt.figure(figsize=figsize)
 
     ax = sns.barplot(
         data=df_plot,
