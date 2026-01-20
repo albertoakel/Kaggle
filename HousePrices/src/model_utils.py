@@ -96,3 +96,5 @@ def metricas_model(y_test, y_pred, nome_modelo='Modelo',write=None):
 def pipe_models(modelo, preprocessador):
     return Pipeline([('preprocess', clone(preprocessador)),
                      ('model', modelo)])
+
+

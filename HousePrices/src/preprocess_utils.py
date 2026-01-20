@@ -1,4 +1,4 @@
-#preprocess_utils.py
+#preprocess_utils_tic.py
 import os
 import joblib
 from datetime import datetime
@@ -63,7 +63,7 @@ def main():
     ],verbose_feature_names_out=False)
 
 #se for usar dentro de uma pipeline, comentar abaixo.
-# #preprocessador.fit(X_train)
+# #preprocessador.fit(X_train) #descomentar para salvar artifact
 
     artifact = {
         'preprocessador': preprocessador,
@@ -82,7 +82,7 @@ def main():
             'version': 'v1.0'}}
 
 # save files
-    joblib.dump(artifact, 'preprocess_house_prices_v1.joblib')
+    joblib.dump(artifact, 'preprocess__v1.joblib')
 
     X_train.to_csv(DATA_DIR+'/X_train_final.csv', index=False)
     X_test.to_csv(DATA_DIR+'/X_test_final.csv', index=False)

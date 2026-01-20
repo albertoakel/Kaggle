@@ -28,9 +28,6 @@ Desenvolver um pipeline completo de **análise exploratória, pré-processamento
   * codificação categórica
 * **Modelos avaliados**:
 
-  * Regressão Logística
-  * KNN
-  * Support Vector Machine (SVM)
   * Random Forest Classifier
   * Gradient Boosting / XGBoost
 * **Avaliação comparativa** com métricas de classificação
@@ -40,10 +37,9 @@ Desenvolver um pipeline completo de **análise exploratória, pré-processamento
 
 ## 📊 Resultados dos Modelos
 
-Avaliação realizada via **validação cruzada estratificada**.
 
 
-➡️ **Melhor desempenho geral:** XGBoost (configuração 2)
+➡️ **Melhor desempenho geral:** 
 
 ---
 
@@ -103,7 +99,7 @@ jupyter notebook
 ### 3️⃣ Pré-processamento automatizado
 
 ```bash
-python src/preprocess_utils.py
+python src/preprocess_utils_tic.py
 ```
 
 ---

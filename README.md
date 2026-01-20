@@ -21,6 +21,9 @@ Cada diretório pode conter:
 - **House of Price**  
   Desafio baseado em: [House Prices - Advanced Regression Techniques](https://www.kaggle.com/c/house-prices-advanced-regression-techniques)  
   `[Ultima pontuação 14/11/2025 : 0.13202]`
+- **Titanic - Machine Learning from Disaster**  
+  Desafio baseado em: [Titanic - Machine Learning from Disaster](https://www.kaggle.com/competitions/titanic/overview)  
+  `[Ultima pontuação 20/01/2026 : 0.77751]`
 
 ---
 <!--

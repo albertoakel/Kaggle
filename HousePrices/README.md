@@ -193,6 +193,6 @@ jupyter notebook
 ### 3️⃣ Pré-processamento automatizado
 
 ```bash
-python src/preprocess_utils.py
+python src/preprocess_utils_tic.py
 ```
 
