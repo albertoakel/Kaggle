@@ -1064,3 +1064,6 @@ def print_estatisticas(*stats_list):
         direcao = "POSITIVA" if corr > 0 else "NEGATIVA"
         significancia = "ESTATISTICAMENTE SIGNIFICATIVA" if (isinstance(p_valor, (int,float)) and p_valor < 0.05) else "NÃO SIGNIFICATIVA"
         print(f"Interpretação: {força} correlação {direcao} ({significancia})")
+
+
+

@@ -61,12 +61,23 @@ class preprocessador_titanic(BaseEstimator, TransformerMixin):
             X['Age2'] = X['Age']
             X.drop(columns='Age', inplace=True)
 
+        # Novo transformaçao: pega pronome dos nomes (v1.2)    <-- aqui
+        X['Title'] = X['Name'].str.split(', ').str[1].str.split('.', n=1).str[0]  # pegando titulos dos nomes
+        X['Title'] = X['Title'].replace({"Mlle": "Miss", "Ms": "Miss"})
+        X['Title'] = X['Title'].replace("Mme", "Mrs")
+        common_titles = ['Mr', 'Miss', 'Mrs', 'Master']
+        X['Title'] = X['Title'].apply(lambda x: x if x in common_titles else 'Rare')
+
         drop_cols = [c for c in ['Name', 'Ticket'] if c in X.columns]
         X.drop(columns=drop_cols, inplace=True)
 
         # 4. Agora sim captura as colunas do dummy
         X_dummy = pd.get_dummies(X, drop_first=False)
         self.dummy_columns_ = X_dummy.columns
+
+        #paracatboots
+        #self.final_columns_ = X.columns  # Apenas para garantir a ordem
+
 
         return self
 
@@ -111,6 +122,13 @@ class preprocessador_titanic(BaseEstimator, TransformerMixin):
         # -----------------------
         X['FamilySize'] = X['SibSp'] + X['Parch'] + 1
 
+        # Novo transformaçao: pega pronome dos nomes (v1.2)  <-- aqui
+        X['Title'] = X['Name'].str.split(', ').str[1].str.split('.', n=1).str[0]  # pegando titulos dos nomes
+        X['Title'] = X['Title'].replace({"Mlle": "Miss", "Ms": "Miss"})
+        X['Title'] = X['Title'].replace("Mme", "Mrs")
+        common_titles = ['Mr', 'Miss', 'Mrs', 'Master']
+        X['Title'] = X['Title'].apply(lambda x: x if x in common_titles else 'Rare')
+
         # -----------------------
         # Drop columns
         # -----------------------
@@ -122,13 +140,15 @@ class preprocessador_titanic(BaseEstimator, TransformerMixin):
         # -----------------------
         X = pd.get_dummies(X, drop_first=False)
         X = X.reindex(columns=self.dummy_columns_, fill_value=0)
+        #paracatboots
+        #X = X.reindex(columns=self.final_columns_)  # Garante ordem das colunas
 
         return X
 
 def main():
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     ROOT_DIR = os.path.dirname(BASE_DIR)
-    DATA_DIR = os.path.join(ROOT_DIR, "data","processed")
+    DATA_DIR = os.path.join(ROOT_DIR, "data","raw")
 
     RANDOM_STATE = 42
     TEST_SIZE = 0.3
@@ -158,23 +178,24 @@ def main():
                 'Preprocessador customizado: Engenharia de Deck (Cabin), '
                 'Criação de FamilySize, HasCabin, e Imputação Hierárquica de Idade '
                 'baseada em Sexo, Pclass e HasCabin.'
+                'agrupamento de titulos dos nomes'
             ),
             'target_transform': 'None (Binary Classification)',
             'fit_on': 'X_train only (30% test split)',
             'created_at': datetime.now().isoformat(),
             'author': 'Alberto Akel',
-            'version': 'v1.0'
+            'version': 'v1.2'
         }
     }
 
 # # save files
-    joblib.dump(artifact, 'preprocess_Titanic_v1.0.joblib')
+    joblib.dump(artifact, 'preprocess_Titanic_v1.2.joblib')
 
 
-    X_train.to_csv(DATA_DIR+'/X_train_final.csv', index=False)
-    X_test.to_csv(DATA_DIR+'/X_test_final.csv', index=False)
-    y_train.to_csv(DATA_DIR+'/y_train_final.csv', index=False)
-    y_test.to_csv(DATA_DIR+'/y_test_final.csv', index=False)
+    X_train.to_csv(DATA_DIR+'/X_train_raw.csv', index=False)
+    X_test.to_csv(DATA_DIR+'/X_test_raw.csv', index=False)
+    y_train.to_csv(DATA_DIR+'/y_train_raw.csv', index=False)
+    y_test.to_csv(DATA_DIR+'/y_test_raw.csv', index=False)
     print("✅ artifact e bases de treino/teste salvos com sucesso!")
 
 if __name__ == "__main__":

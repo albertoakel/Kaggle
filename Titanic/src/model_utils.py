@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 
 from sklearn.model_selection import train_test_split, cross_val_score, KFold, RandomizedSearchCV
-from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score,accuracy_score
 from sklearn.pipeline import Pipeline
 from sklearn.base import clone
 
@@ -96,3 +96,34 @@ def metricas_model(y_test, y_pred, nome_modelo='Modelo',write=None):
 def pipe_models(modelo, preprocessador):
     return Pipeline([('preprocess', clone(preprocessador)),
                      ('model', modelo)])
+
+
+import numpy as np
+
+
+
+def best_threshold(model, X_test, y_test, start=0.3, stop=0.7, steps=41):
+    """
+    Encontra o threshold que maximiza a acurácia para um modelo de classificação.
+    """
+    # 1. Obtém as probabilidades da classe positiva
+    y_probs = model.predict_proba(X_test)[:, 1]
+
+    # 2. Define o range de busca
+    thresholds = np.linspace(start, stop, steps)
+    best_threshold = 0.5
+    max_acc = 0
+
+    # 3. Itera sobre os thresholds
+    for t in thresholds:
+        acc = accuracy_score(y_test, y_probs > t)
+        if acc > max_acc:
+            max_acc = acc
+            best_threshold = t
+
+    print(f"{'=' * 40}")
+    print(f"🎯 Melhor Threshold: {best_threshold:.3f}")
+    print(f"📈 Melhor Acurácia (Test): {max_acc:.4f}")
+    print(f"{'=' * 40}")
+
+    return best_threshold, max_acc

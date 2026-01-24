@@ -17,13 +17,10 @@ Cada diretório pode conter:
 ---
 
 ## ✅ Desafios Já Incluídos
-
-- **House of Price**  
-  Desafio baseado em: [House Prices - Advanced Regression Techniques](https://www.kaggle.com/c/house-prices-advanced-regression-techniques)  
-  `[Ultima pontuação 14/11/2025 : 0.13202]`
-- **Titanic - Machine Learning from Disaster**  
-  Desafio baseado em: [Titanic - Machine Learning from Disaster](https://www.kaggle.com/competitions/titanic/overview)  
-  `[Ultima pontuação 20/01/2026 : 0.77751]`
+| Projeto | Fonte | Última Pontuação | Data       |
+| :--- | :--- | :--- |:-----------|
+| 🏠 **[House Prices](https://github.com/albertoakel/Kaggle/tree/master/HousePrices)** | [Kaggle](https://www.kaggle.com/c/house-prices-advanced-regression-techniques) | `0.13202` | 14/11/2025 |
+| 🚢 **[Titanic](https://github.com/albertoakel/Kaggle/tree/master/Titanic)** | [Kaggle](https://www.kaggle.com/competitions/titanic/overview) | `0.79425` | 22/01/2026 |
 
 ---
 <!--
@@ -75,9 +72,8 @@ Abaixo estão alguns desafios e datasets do Kaggle recomendados para cientistas 
 Contribuições são **bem-vindas**!  
 Você pode:
 
-- Adicionar novos projetos baseados em desafios do Kaggle  
-- Melhorar notebooks ou análises existentes  
-- Sugerir novos datasets ou ideias via *issues*
+- Adicionar comentários e sugestão de novos projetos baseados em desafios do Kaggle  
+- Melhoraria nos notebooks ou análises existentes  
 
 Consulte o arquivo [CONTRIBUTING.md](CONTRIBUTING.md) para mais informações.
 

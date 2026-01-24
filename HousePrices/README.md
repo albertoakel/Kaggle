@@ -28,7 +28,6 @@ Desenvolver um pipeline completo de **pré-processamento, modelagem e avaliaçã
 * **Avaliação comparativa** com MAE, RMSE e R²
 *  **Artefatos persistidos** (preprocessador e melhor modelo)
 
-
 ### Principais Highlights do Projeto
 
 * **Pré-processamento padronizado e reutilizável:** utilização do `preprocessador_v0.joblib`, garantindo consistência no tratamento dos dados em todos os experimentos, reprodutibilidade dos resultados e prevenção de *data leakage*.
@@ -59,20 +58,20 @@ Desenvolver um pipeline completo de **pré-processamento, modelagem e avaliaçã
 
 Avaliação realizada sobre o conjunto de teste (target transformado com `log1p`).
 
-| Modelo                   | MAE        | RMSE       | R²         |
-| ------------------------ | ---------- | ---------- | ---------- |
+| Modelo                   | MAE        | RMSE       | R²         |status|
+| ------------------------ | ---------- | ---------- | ---------- |-|
 | Linear Regression        | 0.0950     | 0.1826     | 0.8035     |
 | Ridge (config 0)         | 0.0945     | 0.1679     | 0.8337     |
-| Ridge (config 1)         | 0.0963     | 0.1346     | 0.8932     |
+| Ridge (config 1)         | 0.0963     | 0.1346     | 0.8932     |🥉
 | LASSO (config 0)         | 0.1089     | 0.1508     | 0.8660     |
 | LASSO (config 1)         | 0.0994     | 0.1384     | 0.8871     |
 | Random Forest (config 0) | 0.0934     | 0.1382     | 0.8874     |
 | Random Forest (config 1) | 0.0919     | 0.1383     | 0.8872     |
 | XGBoost (config 0)       | 0.0976     | 0.1450     | 0.8760     |
-| XGBoost (config 1)       | 0.0894     | 0.1320     | 0.8973     |
-| **XGBoost (config 2)**   | **0.0838** | **0.1240** | **0.9093** |
+| XGBoost (config 1)       | 0.0894     | 0.1320     | 0.8973     |🥈
+| **XGBoost (config 2)**   | **0.0838** | **0.1240** | **0.9093** |🏆
 
-➡️ **Melhor desempenho geral:** XGBoost (configuração 2)
+📌 Nota: A pontuação final submetida ao Kaggle foi **0.13202** (14/11/2025).
 
 ---
 
