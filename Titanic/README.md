@@ -9,10 +9,9 @@ O objetivo é prever **a sobrevivência dos passageiros do Titanic** a partir de
 
 Desenvolver um pipeline completo de **análise exploratória, pré-processamento, modelagem e avaliação**, com foco em:
 
-* interpretação dos dados
+* Interpretação dos dados
 * engenharia de atributos
 * comparação de modelos de classificação
-* controle de overfitting
 
 ---
 
@@ -72,6 +71,8 @@ Titanic/
 ├── data/
 │   ├── raw/                 # Dados originais do Kaggle
 │   └── processed/           # Bases tratadas
+├
+├── models/                   # Gráficos e figuras
 │
 ├── image/                   # Gráficos e figuras
 │
