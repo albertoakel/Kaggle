@@ -17,15 +17,26 @@ from sklearn.base import BaseEstimator, TransformerMixin
 
 class preprocessador_titanic(BaseEstimator, TransformerMixin):
 
+    """
+    Preprocessador customizado para o dataset Titanic (Kaggle).
+
+    Principais transformações
+    --------------------------
+    - Imputação de 'Embarked' pela moda
+    - Criação de 'HasCabin' e 'Deck' a partir de 'Cabin'
+    - Imputação hierárquica de 'Age' baseada em:
+      (Sex, Pclass, HasCabin)
+    - Criação de 'FamilySize'
+    - Extração e agrupamento de títulos ('Title') do nome
+    - One-hot encoding com alinhamento de colunas
+    """
+
+
     def __init__(self):
         self.embarked_mode_ = None
         self.age_medians_ = {}
         self.global_age_median_ = None
 
-    """
-    FIT       : Load self variables
-    TRANSFORM : Unlade self variables
-    """
 
     def fit(self, X, y=None):
         X = X.copy()

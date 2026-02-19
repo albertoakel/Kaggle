@@ -8,14 +8,14 @@ Esta pasta reúne os **notebooks principais do projeto Titanic**, organizados po
 
 ### 🔍 Análise Exploratória de Dados (EDA)
 
-* [**EDA.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/EDA.ipynb) :Análise exploratória completa do dataset Titanic, incluindo avaliação de qualidade dos dados, distribuições univariadas, análises bivariadas, dispersão, correlação e identificação de padrões associados à variável resposta **Survived**.
+* [**EDA.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/EDA.ipynb): Análise exploratória completa do dataset Titanic, incluindo avaliação de qualidade dos dados, distribuições univariadas, análises bivariadas, dispersão, correlação e identificação de padrões associados à variável resposta **Survived**.
   Este notebook fundamenta diretamente as decisões de **pré-processamento e engenharia de atributos** utilizadas nos modelos preditivos.
 
 ---
 
 ### 🌲 Modelos Ensemble — Random Forest
 
-* [**models_randomForest.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/models_randomForest.ipynb)
+* [**models_randomForest.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/models_randomForest.ipynb):
   Avaliação de modelos baseados em árvores do tipo Random Forest:
 
   * Random Forest (baseline)
@@ -23,7 +23,7 @@ Esta pasta reúne os **notebooks principais do projeto Titanic**, organizados po
 
   Ênfase na captura de não linearidades, interações entre variáveis e análise de robustez.
 
-* [**Hiperparameter_search_RF.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/Hiperparameter_search_RF.ipynb)
+* [**Hiperparameter_search_RF.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/Hiperparameter_search_RF.ipynb):
   Busca sistemática de hiperparâmetros para Random Forest, com validação cruzada e análise comparativa de desempenho.
 
 * **RF_Submission.ipynb**
@@ -33,7 +33,7 @@ Esta pasta reúne os **notebooks principais do projeto Titanic**, organizados po
 
 ### 🚀 Gradient Boosting — XGBoost
 
-* [**models_XGBoost.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/models_XGBoost.ipynb)
+* [**models_XGBoost.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/models_XGBoost.ipynb):
   Avaliação de modelos XGBoost em diferentes níveis de complexidade:
 
   * XGBoost (baseline)
@@ -42,7 +42,7 @@ Esta pasta reúne os **notebooks principais do projeto Titanic**, organizados po
 
   Foco em desempenho preditivo e controle de overfitting.
 
-* [**Hiperparameter_search_XGB.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/Hiperparameter_search_XGB.ipynb)
+* [**Hiperparameter_search_XGB.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/Hiperparameter_search_XGB.ipynb):
   Busca de hiperparâmetros do XGBoost, explorando regularização, profundidade e taxa de aprendizado.
 
 * **XGB_Submission.ipynb**
@@ -52,10 +52,10 @@ Esta pasta reúne os **notebooks principais do projeto Titanic**, organizados po
 
 ### 🧠 Gradient Boosting — CatBoost
 
-* [**models_CBTBoost.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/models_CBTBoost.ipynb)
+* [**models_CBTBoost.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/models_CBTBoost.ipynb):
   Modelagem utilizando CatBoost, explorando seu tratamento nativo de variáveis categóricas e estabilidade em datasets tabulares.
 
-* [**Hiperparameter_search_CBT.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/Hiperparameter_search_CBT.ipynb)
+* [**Hiperparameter_search_CBT.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/Hiperparameter_search_CBT.ipynb):
   Otimização de hiperparâmetros do CatBoost com validação cruzada.
 
 * **CBT_Submission.ipynb**

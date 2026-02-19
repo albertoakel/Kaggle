@@ -13,13 +13,14 @@ from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
-''''
+'''
 Modulo responsavel pela criação artefato(joblib) pre-processado e separação das bases de treino/teste
-''''
+'''
+
 def main():
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     ROOT_DIR = os.path.dirname(BASE_DIR)
-    DATA_DIR = os.path.join(ROOT_DIR, "data","processed")
+    DATA_DIR = os.path.join(ROOT_DIR, "data","raw")
 
     RANDOM_STATE = 42
     TEST_SIZE = 0.3
@@ -63,7 +64,7 @@ def main():
     ],verbose_feature_names_out=False)
 
 #se for usar dentro de uma pipeline, comentar abaixo.
-# #preprocessador.fit(X_train) #descomentar para salvar artifact
+    preprocessador.fit(X_train) #descomentar para salvar artifact
 
     artifact = {
         'preprocessador': preprocessador,
@@ -82,12 +83,12 @@ def main():
             'version': 'v1.0'}}
 
 # save files
-    joblib.dump(artifact, 'preprocess__v1.joblib')
+    joblib.dump(artifact, 'preprocess_HP_v1.joblib')
 
-    X_train.to_csv(DATA_DIR+'/X_train_final.csv', index=False)
-    X_test.to_csv(DATA_DIR+'/X_test_final.csv', index=False)
-    y_train.to_csv(DATA_DIR+'/y_train_final.csv', index=False)
-    y_test.to_csv(DATA_DIR+'/y_test_final.csv', index=False)
+    X_train.to_csv(DATA_DIR+'/X_train_raw.csv', index=False)
+    X_test.to_csv(DATA_DIR+'/X_test_raw.csv', index=False)
+    y_train.to_csv(DATA_DIR+'/y_train_raw.csv', index=False)
+    y_test.to_csv(DATA_DIR+'/y_test_raw.csv', index=False)
     print("✅ artifact e bases de treino/teste salvos com sucesso!")
 
 if __name__ == "__main__":
