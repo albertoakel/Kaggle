@@ -1,3 +1,4 @@
+#plot_metrica_class.py
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -122,6 +123,127 @@ def gerar_relatorio_estatistico(models_list, X_train, y_train, X_test, y_test):
     print("\n#Processo finalizado em:", time.strftime("%H:%M:%S"))
 
     return df_results.sort_values(by='Test ROC-AUC', ascending=False),winner
+
+
+
+def gerar_relatorio_estatistico2(models_list, X_train, y_train, X_test, y_test, criterio="roc_auc"):
+    """
+    criterio: "roc_auc" ou "acc"
+    """
+
+    from scipy.stats import ttest_rel
+    import pandas as pd
+    import time
+
+    def check_sig(p):
+        return "SIM" if p < 0.05 else "NÃO"
+
+    results_data = []
+
+    for name, model, s_roc, s_acc, probs, thresh in models_list:
+
+        test_roc = roc_auc_score(y_test, probs)
+        test_acc_std = accuracy_score(y_test, probs > 0.5)
+        test_acc_opt = accuracy_score(y_test, probs > thresh)
+
+        results_data.append({
+            'Modelo': name,
+            'CV ROC Mean': s_roc.mean(),
+            'CV ROC Std': s_roc.std(),
+            'CV ACC Mean': s_acc.mean(),
+            'CV ACC Std': s_acc.std(),
+            'Test ROC-AUC': test_roc,
+            'Test ACC (0.5)': test_acc_std,
+            'Best Thresh': thresh,
+            'Test ACC (Opt)': test_acc_opt
+        })
+
+    df_results = pd.DataFrame(results_data)
+
+    print(f"{'='*95}")
+    print(f"{'RELATÓRIO DE DESEMPENHO E ESTABILIDADE ESTATÍSTICA':^95}")
+    print(f"{'='*95}")
+    print(df_results.round(4).to_string(index=False))
+
+    print(f"\n{'='*95}")
+    print(f"{'ANÁLISE DE SIGNIFICÂNCIA ESTATÍSTICA (T-TEST PAREADO)':^95}")
+    print(f"{'='*95}")
+
+    # Seleção do vetor correto para teste estatístico
+    for i in range(1, len(models_list)):
+        for j in range(i + 1, len(models_list)):
+            if criterio == "roc_auc":
+                t, p = ttest_rel(models_list[i][2], models_list[j][2])
+            else:
+                t, p = ttest_rel(models_list[i][3], models_list[j][3])
+
+            print(f"{models_list[i][0]} vs {models_list[j][0]}: "
+                  f"p-value = {p:.4f} | Diferença Significativa? {check_sig(p)}")
+
+    # ===============================
+    # Definição do vencedor
+    # ===============================
+    if criterio == "roc_auc":
+        metric_col = "Test ROC-AUC"
+        cv_mean_col = "CV ROC Mean"
+    else:
+        metric_col = "Test ACC (Opt)"
+        cv_mean_col = "CV ACC Mean"
+
+    best_idx = df_results[metric_col].idxmax()
+    vencedor = df_results.iloc[best_idx]
+    winner = [models_list[best_idx][0], models_list[best_idx][1]]
+
+    baseline = df_results.iloc[0]
+    ganho = vencedor[metric_col] - baseline[metric_col]
+
+    # Significância vencedor vs baseline
+    if criterio == "roc_auc":
+        t_stat, p_val = ttest_rel(models_list[best_idx][2], models_list[0][2])
+    else:
+        t_stat, p_val = ttest_rel(models_list[best_idx][3], models_list[0][3])
+
+    sig_text = (
+        f"estatisticamente significativa ({p_val:.4f} < 0.05)"
+        if p_val < 0.05 else
+        f"não significativa ({p_val:.4f} > 0.05)"
+    )
+
+    print(f"\n{'='*95}")
+    print(f"{'CONCLUSÃO TÉCNICA AUTOMÁTICA':^95}")
+    print(f"{'='*95}")
+
+    print(f"1. VENCEDOR: {vencedor['Modelo']}")
+    print(f"   - Ganho real sobre o Baseline: {ganho:+.4f} em {metric_col}.")
+
+    print(f"\n2. ESTABILIDADE E SIGNIFICÂNCIA:")
+    print(f"   - A melhoria é {sig_text}.")
+    print(f"   - Threshold otimizado: {vencedor['Best Thresh']:.3f}")
+    print(f"   - ACC padrão: {vencedor['Test ACC (0.5)']:.4f}")
+    print(f"   - ACC otimizada: {vencedor['Test ACC (Opt)']:.4f}")
+
+    # ===============================
+    # Overfitting
+    # ===============================
+    cv_mean = vencedor[cv_mean_col]
+    diff_cv_test = abs(cv_mean - vencedor[metric_col])
+    status_fit = "ALTA" if diff_cv_test < 0.03 else "MODERADA"
+
+    print(f"\n3. CONFIANÇA DO MODELO:")
+    print(f"   - Aderência CV vs Teste: {status_fit} (Δ = {diff_cv_test:.4f})")
+
+    thresh = vencedor['Best Thresh']
+    if thresh < 0.45:
+        print("   - Estratégia: modelo AGRESSIVO (threshold baixo).")
+    elif thresh > 0.55:
+        print("   - Estratégia: modelo CONSERVADOR (threshold alto).")
+    else:
+        print("   - Estratégia: equilíbrio próximo a 0.5.")
+
+    print("\n#Processo finalizado em:", time.strftime("%H:%M:%S"))
+
+    return df_results.sort_values(by=metric_col, ascending=False), winner
+
 
 
 def model_evaluation_grid(

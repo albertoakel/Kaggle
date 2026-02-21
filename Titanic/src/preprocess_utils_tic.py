@@ -58,6 +58,9 @@ class preprocessador_titanic(BaseEstimator, TransformerMixin):
                 cols = group_cols[:len(group_cols) - i]
                 self.age_medians_[tuple(cols)] = X.groupby(cols)['Age'].median()
 
+        if 'Fare' in X.columns:
+            self.fare_median_ = X['Fare'].median()  #new
+
         # 3. Aplicar TODAS as transformações que o transform faria
         # Isso garante que dummy_columns_ aprenda a estrutura final real
         X['FamilySize'] = X['SibSp'] + X['Parch'] + 1
@@ -128,6 +131,8 @@ class preprocessador_titanic(BaseEstimator, TransformerMixin):
             X['Age2'] = X['Age2'].fillna(self.global_age_median_)
             X.drop(columns='Age', inplace=True)
 
+        if 'Fare' in X.columns:
+            X['Fare'] = X['Fare'].fillna(self.fare_median_) #new
         # -----------------------
         # FamilySize
         # -----------------------

@@ -29,6 +29,7 @@ Desenvolver um pipeline completo de **análise exploratória, pré-processamento
 
   * Random Forest Classifier
   * Gradient Boosting / XGBoost
+  * CatBoost
 * **Avaliação comparativa** com métricas de classificação
 * **Modelo final pronto para submissão no Kaggle**
 
