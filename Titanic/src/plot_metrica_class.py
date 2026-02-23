@@ -35,6 +35,8 @@ def gerar_relatorio_estatistico(models_list, X_train, y_train, X_test, y_test):
     results_data = []
 
     for name, model, s_roc, s_acc, probs, thresh in models_list:
+
+
         test_roc = roc_auc_score(y_test, probs)
         test_acc_std = accuracy_score(y_test, probs > 0.5)
         test_acc_opt = accuracy_score(y_test, probs > thresh)

@@ -102,9 +102,9 @@ import numpy as np
 
 
 
-def best_threshold(model, X_test, y_test, start=0.3, stop=0.7, steps=41):
+def best_threshold(model, X_test, y_test, start=0.3, stop=0.7, steps=41,print_results=False):
     """
-    Encontra o threshold que maximiza a acurácia para um modelo de classificação.
+    usar versão 2 abaixo.Encontra o threshold que maximiza a acurácia para um modelo de classificação.
     """
     # 1. Obtém as probabilidades da classe positiva
     y_probs = model.predict_proba(X_test)[:, 1]
@@ -121,9 +121,46 @@ def best_threshold(model, X_test, y_test, start=0.3, stop=0.7, steps=41):
             max_acc = acc
             best_threshold = t
 
-    print(f"{'=' * 40}")
-    print(f"🎯 Melhor Threshold: {best_threshold:.3f}")
-    print(f"📈 Melhor Acurácia (Test): {max_acc:.4f}")
-    print(f"{'=' * 40}")
+    if print_results == True:
+        print(f"{'=' * 40}")
+        print(f"Melhor Threshold: {best_threshold:.3f}")
+        print(f"Melhor Acurácia (Test): {max_acc:.4f}")
+        print(f"{'=' * 40}")
 
     return best_threshold, max_acc
+
+
+def best_threshold2(model, X_train, y_train, X_test, y_test, start=0.3, stop=0.7, steps=41, print_results=False):
+    """
+    Encontra o threshold que maximiza a acurácia para um modelo de classificação.(versão corrigida best_threshold)
+    """
+    # 1. Obtém as probabilidades da classe positiva
+    # probabilidades do treino
+
+    prob_train = model.predict_proba(X_train)[:, 1]
+
+    # 2. Define o range de busca
+    thresholds = np.linspace(start, stop, steps)
+    best_threshold = 0.5
+    max_acc0 = 0
+
+    # 3. Itera sobre os thresholds( melhor threshold usando apenas o TREINO)
+    for t in thresholds:
+        acc = accuracy_score(y_train, prob_train > t)
+        if acc > max_acc0:
+            max_acc0 = acc
+            best_threshold = t
+
+    # probabilidades do TESTE
+    prob_test = model.predict_proba(X_test)[:, 1]
+    # Calculamos a acurácia aplicando o threshold do treino nas probabilidades do teste
+    max_acc = accuracy_score(y_test, prob_test > best_threshold)
+
+    if print_results == True:
+        print(f"{'=' * 40}")
+        print(f"Melhor Threshold: {best_threshold:.3f}")
+        print(f"Melhor Acurácia (Test): {max_acc:.4f}")
+        print(f"{'=' * 40}")
+
+    return best_threshold, max_acc, prob_test
+

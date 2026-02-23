@@ -102,7 +102,7 @@ import numpy as np
 
 
 
-def best_threshold(model, X_test, y_test, start=0.3, stop=0.7, steps=41):
+def best_threshold(model, X_test, y_test, start=0.3, stop=0.7, steps=41,print_results=False):
     """
     Encontra o threshold que maximiza a acurácia para um modelo de classificação.
     """
@@ -121,9 +121,10 @@ def best_threshold(model, X_test, y_test, start=0.3, stop=0.7, steps=41):
             max_acc = acc
             best_threshold = t
 
-    print(f"{'=' * 40}")
-    print(f"🎯 Melhor Threshold: {best_threshold:.3f}")
-    print(f"📈 Melhor Acurácia (Test): {max_acc:.4f}")
-    print(f"{'=' * 40}")
+    if print_results == True:
+        print(f"{'=' * 40}")
+        print(f"Melhor Threshold: {best_threshold:.3f}")
+        print(f"Melhor Acurácia (Test): {max_acc:.4f}")
+        print(f"{'=' * 40}")
 
     return best_threshold, max_acc
