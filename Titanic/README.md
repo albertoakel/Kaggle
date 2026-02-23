@@ -57,7 +57,7 @@ Desenvolver um pipeline completo de **análise exploratória, pré-processamento
 | SVM (Grid Search)                 | 0.8488 ± 0.0634     | 0.8734       | 0.8172         | 0.8097         |        |    
 
 
-📌 Nota: Em negrito o modelo como maior pontuação obtidade na plataforma  Kaggle (**0.79425**)  em 23/01/2026 
+📌 Nota: Em negrito o modelo como maior pontuação na plataforma  Kaggle (**0.79425**)  em 23/01/2026 
 
 ---
 
