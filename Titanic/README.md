@@ -30,6 +30,7 @@ Desenvolver um pipeline completo de **análise exploratória, pré-processamento
   * Random Forest Classifier
   * Gradient Boosting / XGBoost
   * CatBoost
+  * SVM
 * **Avaliação comparativa** com métricas de classificação
 * **Modelo final pronto para submissão no Kaggle**
 
@@ -54,7 +55,9 @@ Desenvolver um pipeline completo de **análise exploratória, pré-processamento
 | SVM (Base)                        | 0.8513 ± 0.0596     | 0.8769       | 0.8209         | 0.8134         |        |
 | SVM (Random Search)               | 0.8531 ± 0.0593     | 0.8649       | 0.8209         | 0.8134         |        |
 | SVM (Grid Search)                 | 0.8488 ± 0.0634     | 0.8734       | 0.8172         | 0.8097         |        |    
-📌 Nota: A pontuação final submetida ao Kaggle foi **0.79425** (14/11/2025). 
+
+
+📌 Nota: Em negrito o modelo como maior pontuação obtidade na plataforma  Kaggle (**0.79425**)  em 23/01/2026 
 
 ---
 
