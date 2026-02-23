@@ -16,17 +16,15 @@ Esta pasta reúne os **notebooks principais do projeto Titanic**, organizados po
 ### 🌲 Modelos Ensemble — Random Forest
 
 * [**models_randomForest.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/models_randomForest.ipynb):
-  Avaliação de modelos baseados em árvores do tipo Random Forest:
+  Avaliação de modelos baseados em árvores do tipo Random Forest com enfase na captura de não linearidades, interações entre variáveis e análise de robustez.
 
   * Random Forest (baseline)
   * Random Forest com hiperparâmetros ajustados
 
-  Ênfase na captura de não linearidades, interações entre variáveis e análise de robustez.
-
-* [**Hiperparameter_search_RF.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/Hiperparameter_search_RF.ipynb):
+* [**Hiperparameter_search_RF.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/Hiperparameter_search_RF.ipyn):
   Busca sistemática de hiperparâmetros para Random Forest, com validação cruzada e análise comparativa de desempenho.
 
-* **RF_Submission.ipynb**
+* [**Submission_RF.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/Submission_RF.ipynb)
   Geração do arquivo de submissão Kaggle utilizando o melhor modelo Random Forest selecionado.
 
 ---
@@ -34,18 +32,17 @@ Esta pasta reúne os **notebooks principais do projeto Titanic**, organizados po
 ### 🚀 Gradient Boosting — XGBoost
 
 * [**models_XGBoost.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/models_XGBoost.ipynb):
-  Avaliação de modelos XGBoost em diferentes níveis de complexidade:
+  Avaliação de modelos XGBoost em diferentes níveis de complexidade com Foco em desempenho preditivo e controle de overfitting.
 
   * XGBoost (baseline)
   * XGBoost com ajustes intermediários
   * XGBoost otimizado
 
-  Foco em desempenho preditivo e controle de overfitting.
 
 * [**Hiperparameter_search_XGB.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/Hiperparameter_search_XGB.ipynb):
   Busca de hiperparâmetros do XGBoost, explorando regularização, profundidade e taxa de aprendizado.
 
-* **XGB_Submission.ipynb**
+* [**Submission_XGB.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/Submission_XGB.ipynb)
   Notebook dedicado à geração da submissão Kaggle com o melhor modelo XGBoost.
 
 ---
@@ -58,11 +55,18 @@ Esta pasta reúne os **notebooks principais do projeto Titanic**, organizados po
 * [**Hiperparameter_search_CBT.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/Hiperparameter_search_CBT.ipynb):
   Otimização de hiperparâmetros do CatBoost com validação cruzada.
 
-* **CBT_Submission.ipynb**
+* [**Submission_CBT.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/Submission_CBT.ipynb)
   Geração do arquivo de submissão baseado no melhor modelo CatBoost.
 
 ---
+### 📏 Support Vector Machine — SVM
 
+* [**models_SVM.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/models_CBTBoost.ipynb):
+
+* [**Hiperparameter_search_SVM.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/Hiperparameter_search_CBT.ipynb):
+  Otimização de hiperparâmetros do SVM com validação cruzada.
+
+  
 ## ⚙️ Padrões adotados
 
 * Pré-processamento centralizado e reutilizável (via objetos serializados)
@@ -74,15 +78,14 @@ Esta pasta reúne os **notebooks principais do projeto Titanic**, organizados po
 
 ## ✅ Modelos finais e comparações
 
-Os modelos **Random Forest**, **XGBoost** e **CatBoost** são comparados de forma consistente sob o mesmo pipeline de dados. A escolha do modelo final considera:
+Os modelos **Random Forest**, **XGBoost**, **CatBoost** e **SVM** são comparados de forma consistente sob o mesmo pipeline de dados. A escolha do modelo final considera:
 
 * Desempenho médio em validação cruzada
 * Estabilidade entre folds
 * Capacidade de generalização
 
 
-## 📊 Resultados dos Modelos
-
+## 📊 Resultados dos Modelo
 | Modelo                            | CV ROC-AUC (±σ) | Test ROC-AUC | Test ACC (0.5) | Test ACC (Opt) | Status |
 |-----------------------------------| --------------- | ------ |----------------| --------- | ------ |
 | Random Forest (Base)              | 0.8600 ± 0.0501 | 0.8710 | 0.8060         | 0.8134    |        |
@@ -97,5 +100,9 @@ Os modelos **Random Forest**, **XGBoost** e **CatBoost** são comparados de form
 | CatBoost (Random Search)          | 0.8460 ± 0.0508 | 0.8730 | 0.8134         | 0.8134    |        |
 | CatBoost (Refine)                 | 0.8460 ± 0.0466 | 0.8739 | 0.8246         | 0.8246    |        |
 | CatBoost (Bayes)                  | 0.8539 ± 0.0535 | 0.8678 | 0.8246         | 0.8284    |        |
+| SVM (Base)                        | 0.8513 ± 0.0596    | 0.8769       | 0.8209         | 0.8134         |        |
+| SVM (Random Search)               | 0.8531 ± 0.0593    | 0.8649       | 0.8209         | 0.8134         |        |
+| SVM (Grid Search)                 | 0.8488 ± 0.0634    | 0.8734       | 0.8172         | 0.8097         |        |    
+
 
 --
