@@ -61,12 +61,6 @@ Desenvolver um pipeline completo de **análise exploratória, pré-processamento
 
 ---
 
-## 🧠 Principais Aprendizados
-
-
-
----
-
 ## 📁 Estrutura do Projeto
 
 ```
