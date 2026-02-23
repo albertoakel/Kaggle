@@ -66,29 +66,30 @@ Desenvolver um pipeline completo de **análise exploratória, pré-processamento
 ```
 Titanic/
 │
-├── app/                     # Aplicações futuras (deploy)
+├── app/                                # Aplicações futuras (deploy)
 │
 ├── data/
-│   ├── raw/                 # Dados originais do Kaggle
-│   └── processed/           # Bases tratadas
+│   ├── raw/                            # Dados originais do Kaggle
+│   └── processed/                      # Bases tratadas
 ├
-├── models/                   # Gráficos e figuras
+├── models/                             # Gráficos e figuras
 │
-├── image/                   # Gráficos e figuras
+├── image/                              # Gráficos e figuras
 │
 ├── notebook/
-│   ├── eda_titanic.ipynb
-│   ├── models_baseline.ipynb
-│   ├── models_ensemble.ipynb
-│   └── submission.ipynb
+│   ├── eda_titanic.ipynb               # EDA
+│   ├── models_.ipynb                   # modelo testado
+│   ├── hiperparameter_tuning_.ipynb    # processos de tunning
+│   └── Submission_.ipynb               # Template submissão 
 │
-├── sandbox/                 # Experimentos e testes
+├── sandbox/                            # Experimentos e testes
 │
 ├── src/
-│   ├── preprocess_utils.py
-│   ├── feature_utils.py
-│   ├── model_utils.py
-│   └── best_model.joblib
+│   ├── preprocess_utils.py            # Pré-processamento
+│   ├── functions.py                   # funções graficas
+│   ├── model_utils.py                 # funções estatiscas
+│   ├── plot_metrica_class.py          # relatorio estatitico
+│   └── pre_process.joblib             # preprocessadores
 │
 ├── requirements.txt
 └── README.md
