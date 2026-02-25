@@ -585,6 +585,134 @@ def correlation_bar(df, target, threshold=None, paleta=None,metodo=None,plot_typ
 
     return corr_ordered, corr_target
 
+
+def correlation_bar2(df, target, threshold=None, paleta=None, metodo=None, plot_type='all', top=None):
+    """
+    Plot heatmap and/or barplot of correlation with target variable.
+    add top para definir numero de variaveis exibidas no plot
+    """
+
+    if paleta is None:
+        paleta = color_palette21[::-1]
+
+    if metodo is None:
+        metodo = pearson
+
+    # --- Correlation ---
+    corr = df.corr(numeric_only=True, method=metodo)
+
+    # --- selecionar top variáveis ---
+    corr_target_full = corr[target].drop(target).sort_values(ascending=False)
+
+    if isinstance(top, int):
+        top_features = corr_target_full.head(top).index
+        features = list(top_features) + [target]
+        corr = corr.loc[features, features]
+
+    # --- Normalization ---
+    vmin, vmax = -1, 1
+    norm = plt.Normalize(vmin=vmin, vmax=vmax)
+
+    # --- Custom colormap ---
+    cmap60 = LinearSegmentedColormap.from_list(
+        "custom_21", paleta, N=60
+    )
+
+    # --- Sorting by target ---
+    order = corr[target].sort_values(ascending=True).index
+    corr_ordered = corr.loc[order, order]
+    dfcm = corr_ordered.copy()
+
+    if isinstance(threshold, (int, float)):
+        dfcm[(dfcm < threshold) & (dfcm > -threshold)] = pd.NA
+        dfcm[dfcm >= 0.99] = pd.NA
+
+    # --- Correlation with target variable ---
+    corr_target = dfcm[target].drop(target).sort_values(ascending=False)
+
+    cmap60_bar = [cmap60(norm(value)) for value in corr_target.values]
+
+    # --- Plotting ---
+    if plot_type == 'all':
+        fig, axes = plt.subplots(
+            1, 2,
+            figsize=(18, 8),
+            gridspec_kw={'width_ratios': [1.6, 0.6]}
+        )
+        ax_corr, ax_bar = axes
+    else:
+        fig, ax = plt.subplots(figsize=(10, 8))
+
+    if plot_type in ['all', 'corr']:
+        ax = ax_corr if plot_type == 'all' else ax
+        fig = ax.get_figure()
+        fig.set_size_inches(16, 8)
+
+        sns.heatmap(
+            dfcm,
+            cmap=cmap60,
+            annot=True,
+            fmt=".2f",
+            center=0,
+            vmin=vmin,
+            vmax=vmax,
+            linewidths=0.4,
+            cbar_kws={'label': metodo.title() + ' Correlation'},
+            ax=ax
+        )
+
+        ax.set_title(
+            f"Correlation Map Ordered by '{target}'",
+            fontsize=14,
+            weight='bold'
+        )
+
+    if plot_type in ['all', 'bar']:
+        ax = ax_bar if plot_type == 'all' else ax
+
+        bar_data = pd.DataFrame({
+            'features': corr_target.index,
+            'correlation': corr_target.values,
+            'hue': corr_target.values
+        })
+
+        sns.barplot(
+            data=bar_data,
+            x='correlation',
+            y='features',
+            palette=cmap60_bar,
+            ax=ax
+        )
+
+        ax.set_title(
+            f"Variable Correlation with '{target}'",
+            fontsize=14,
+            weight='bold'
+        )
+
+        ax.set_xlabel(metodo.title() + " Correlation Coefficient")
+
+        sm = plt.cm.ScalarMappable(cmap=cmap60, norm=norm)
+        sm.set_array([])
+
+        cbar = fig.colorbar(
+            sm,
+            ax=ax,
+            fraction=0.03,
+            pad=0.04
+        )
+
+        cbar.set_label(
+            'Correlation Scale (shared with heatmap)',
+            rotation=270,
+            labelpad=15
+        )
+
+    plt.tight_layout()
+    plt.show()
+
+    return corr, corr_target_full
+
 def scatter_by_category(df, x_var, y_var, hue_var, category_var,
                         ncols=3, figsize=[16, 16], palette=None,
                         suptitle=None, alpha=0.6, s=45,category_name=None):

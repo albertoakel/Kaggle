@@ -67,6 +67,8 @@ class RiskFeatureEngineer(BaseEstimator, TransformerMixin):
         # -----------------------------
         # Probabilidades fixas
         # -----------------------------
+        # valores obtidos a partir do percentual dos grupos diagnosticados com diabetes.(VER EDA)
+
         age_prob = {
             'Jovem Adulto (18–29)': 0.4247,
             'Adulto (30–44)': 0.5527,

@@ -21,6 +21,9 @@ Cada diretório pode conter:
 | :--- | :--- | :--- |:-----------|
 | 🏠 **[House Prices](https://github.com/albertoakel/Kaggle/tree/master/HousePrices)** | [Kaggle](https://www.kaggle.com/c/house-prices-advanced-regression-techniques) | `0.13202` | 14/11/2025 |
 | 🚢 **[Titanic](https://github.com/albertoakel/Kaggle/tree/master/Titanic)** | [Kaggle](https://www.kaggle.com/competitions/titanic/overview) | `0.79425` | 22/01/2026 |
+| 🍬 **[Diabetes Prediction](https://github.com/albertoakel/Kaggle/tree/master/Diabetes_Prediction_Challenge)** | [Kaggle](https://www.kaggle.com/competitions/playground-series-s5e12) | `0.64096` | 04/02/2026 |
+
+
 
 ---
 <!--
