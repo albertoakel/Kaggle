@@ -6,8 +6,10 @@ warnings.filterwarnings('ignore', category=UserWarning,
 import numpy as np
 import pandas as pd
 
-from sklearn.model_selection import train_test_split, cross_val_score, KFold, RandomizedSearchCV
-from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score,accuracy_score
+from sklearn.model_selection import train_test_split, cross_val_score, KFold, RandomizedSearchCV,StratifiedKFold
+from sklearn.metrics import (accuracy_score, classification_report,
+                             confusion_matrix, roc_auc_score,
+                             average_precision_score,roc_curve)
 from sklearn.pipeline import Pipeline
 from sklearn.base import clone
 
@@ -98,9 +100,6 @@ def pipe_models(modelo, preprocessador):
                      ('model', modelo)])
 
 
-import numpy as np
-
-
 
 def best_threshold(model, X_test, y_test, start=0.3, stop=0.7, steps=41,print_results=False):
     """
@@ -128,3 +127,98 @@ def best_threshold(model, X_test, y_test, start=0.3, stop=0.7, steps=41,print_re
         print(f"{'=' * 40}")
 
     return best_threshold, max_acc
+
+def best_threshold2(model, X_train, y_train, X_test, y_test, start=0.3, stop=0.7, steps=41, print_results=False):
+    """
+    Encontra o threshold que maximiza a acurácia para um modelo de classificação.(versão corrigida best_threshold)
+    """
+    # 1. Obtém as probabilidades da classe positiva
+    # probabilidades do treino
+
+    prob_train = model.predict_proba(X_train)[:, 1]
+
+    # 2. Define o range de busca
+    thresholds = np.linspace(start, stop, steps)
+    best_threshold = 0.5
+    max_acc0 = 0
+
+    # 3. Itera sobre os thresholds( melhor threshold usando apenas o TREINO)
+    for t in thresholds:
+        acc = accuracy_score(y_train, prob_train > t)
+        if acc > max_acc0:
+            max_acc0 = acc
+            best_threshold = t
+
+    # probabilidades do TESTE
+    prob_test = model.predict_proba(X_test)[:, 1]
+    # Calculamos a acurácia aplicando o threshold do treino nas probabilidades do teste
+    max_acc = accuracy_score(y_test, prob_test > best_threshold)
+
+    if print_results == True:
+        print(f"{'=' * 40}")
+        print(f"Melhor Threshold: {best_threshold:.3f}")
+        print(f"Melhor Acurácia (Test): {max_acc:.4f}")
+        print(f"{'=' * 40}")
+
+    return best_threshold, max_acc, prob_test
+
+def evaluate_model(pipe,X_train,y_train,X_val,y_val,modelname='Modelo_sem_nome',pipe_fit=True):
+
+    # 1)FIT
+    if pipe_fit==True:
+        pipe.fit(X_train, y_train)
+
+    # 2)Pred
+    y_pred=pipe.predict(X_val)
+
+    # 3) Otimização do threshold de decisão
+    best_th,max_acc,y_probs=best_threshold2(pipe, X_train, y_train,X_val,y_val)
+
+    # 4) Validação cruzada
+    mtd_scoring='roc_auc'
+    cv_s = StratifiedKFold(n_splits=3, shuffle=True, random_state=42)
+    cv_scores = cross_val_score(pipe, X_train, y_train,
+                                 cv=cv_s,
+                                 scoring=mtd_scoring,
+                                 n_jobs=-1)
+
+    print(f"\n{'='*70}")
+    print(f" 📍 RESULTADOS {modelname.upper()}".center(70))
+    print(f"{'='*70}")
+    # =====================================================
+    # 5) Avaliação por validação cruzada (Treino)
+    # =====================================================
+
+    print("📊 CROSS-VALIDATION")
+    print(f"   Média {mtd_scoring}:       {cv_scores.mean():>15.4f} ± {cv_scores.std():.4f}")
+
+    # =====================================================
+    # 6) Avaliação no conjunto de teste
+    # =====================================================
+    print(f"\n✅ TEST SET")
+    print(f"   Padrão (0.5):              {accuracy_score(y_val, y_pred):>10.4f}")
+    print(f"   Otimizado:                 {max_acc:>10.4f} (threshold ={best_th:>6.3f})")
+    print(f"   ROC-AUC:                   {roc_auc_score(y_val, y_probs):>10.4f}")
+    print(f"   Avg precision:             {average_precision_score(y_val, y_probs):>10.4f}")
+    resultados = {}
+    resultados[modelname] = {
+        'cv_scores_stat':[cv_scores.mean(),cv_scores.std()],
+        'acc_score':accuracy_score(y_val, y_pred),
+        'max_acc':max_acc,
+        'best_t':best_th,
+        'cv_scores':cv_scores,
+        'roc_auc_score':roc_auc_score(y_val, y_probs),
+        'avg_p_score': average_precision_score(y_val, y_probs),
+        'y_probs':y_probs,
+        'y_pred':y_pred}
+    return pd.DataFrame(resultados).T
+
+
+
+def print_hiper(search_best_params):
+    print("🎯 Melhores Hiperparâmetros")
+    print("-" * 50)
+    for param, value in search_best_params.items():
+        param_name = param.replace('model__', '').replace('_', ' ').title()
+        print(f"• {param_name:<25} : {value}")
+    print("-" * 50)

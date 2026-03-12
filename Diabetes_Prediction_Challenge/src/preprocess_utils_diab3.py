@@ -156,7 +156,7 @@ class RiskFeatureEngineer(BaseEstimator, TransformerMixin):
         self.max_age_ = X['age'].max()
 
         #add a função para obter paw_min e paw_max
-        paw_tmp = 1/(np.log1p(X['physical_activity_minutes_per_week'])+1)
+        paw_tmp = 1 / (np.log1p(X['physical_activity_minutes_per_week']) + 1)
         self.paw_min_ = paw_tmp.min()
         self.paw_max_ = paw_tmp.max()
 
@@ -185,18 +185,19 @@ class RiskFeatureEngineer(BaseEstimator, TransformerMixin):
             X['risk_fh_p']
         ) / 3
 
-
+        #cria risco probabilistico continuo
         X['risk_age_cont'] = (
             (X['age'] - self.min_age_) /
             (self.max_age_ - self.min_age_ + 1e-9)
         )
 
-        paw_tmp = 1/(np.log1p(X['physical_activity_minutes_per_week'])+1)
+        paw_tmp = 1 / (np.log1p(X['physical_activity_minutes_per_week']) + 1)
 
         X['risk_paw_cont'] = (
-            (paw_tmp - self.paw_min_) /
-            (self.paw_max_ - self.paw_min_ + 1e-9)
+                (paw_tmp - self.paw_min_) /
+                (self.paw_max_ - self.paw_min_ + 1e-9)
         )
+
 
         X['continuous_risk_score'] = (
             X['risk_age_cont']*0.35 +
