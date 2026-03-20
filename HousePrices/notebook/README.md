@@ -22,7 +22,6 @@ Esta pasta reúne os **notebooks principais do projeto House Prices**, organizad
   * Ridge (default e ajustado)
   * Lasso (default e ajustado)
 
-  Foco em interpretabilidade, regularização e estabilidade.
 
 ---
 
@@ -34,7 +33,6 @@ Esta pasta reúne os **notebooks principais do projeto House Prices**, organizad
   * Random Forest (configuração padrão)
   * Random Forest (hiperparâmetros ajustados)
 
-  Ênfase em robustez e generalização.
 
 ---
 
@@ -47,7 +45,6 @@ Esta pasta reúne os **notebooks principais do projeto House Prices**, organizad
   * XGBoost (configuração intermediária)
   * XGBoost (configuração otimizada)
 
-  Melhor desempenho preditivo do projeto.
 
 ---
 
