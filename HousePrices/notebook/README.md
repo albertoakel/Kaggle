@@ -15,7 +15,7 @@ Esta pasta reúne os **notebooks principais do projeto House Prices**, organizad
 
 ### 📐 Modelos Lineares
 
-* [**models_Linear.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/HousePrices/notebook/models_Linear.ipynb)
+* [**models_Linear.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/HousePrices/notebook/02_Linear_model_compare.ipynb)
   Avaliação de modelos lineares como *baseline*:
 
   * Linear Regression
@@ -28,7 +28,7 @@ Esta pasta reúne os **notebooks principais do projeto House Prices**, organizad
 
 ### 🌲 Modelos Ensemble — Random Forest
 
-* [**models_Random_Forest.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/HousePrices/notebook/models_Random_Forest.ipynb)
+* [**models_Random_Forest.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/HousePrices/notebook/02_RF_model_compare.ipynb)
   Modelos baseados em árvores para capturar não linearidades e interações:
 
   * Random Forest (configuração padrão)
@@ -40,7 +40,7 @@ Esta pasta reúne os **notebooks principais do projeto House Prices**, organizad
 
 ### 🚀 Gradient Boosting — XGBoost
 
-* [**models_XGBoost.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/HousePrices/notebook/models_XGBoost.ipynb)
+* [**models_XGBoost.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/HousePrices/notebook/02_XGB_model_compare.ipynb)
   Modelos de *boosting* sequencial com regularização explícita:
 
   * XGBoost (baseline)

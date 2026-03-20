@@ -22,9 +22,9 @@ Desenvolver um pipeline completo de **pré-processamento, modelagem e avaliaçã
 *  **Pré-processamento robusto** (imputação, normalização, one-hot encoding)
 * **Modelos avaliados**:
 
-  * **[Modelos Lineares](https://github.com/albertoakel/Kaggle/blob/master/HousePrices/notebook/models_Linear.ipynb)**
-  * **[Random Forest-Ensemble](https://github.com/albertoakel/Kaggle/blob/master/HousePrices/notebook/models_Random_Forest.ipynb)**
-  * **[XGBoosting](https://github.com/albertoakel/Kaggle/blob/master/HousePrices/notebook/models_XGBoost.ipynb)**
+  * **[Modelos Lineares](https://github.com/albertoakel/Kaggle/blob/master/HousePrices/notebook/02_Linear_model_compare.ipynb)**
+  * **[Random Forest-Ensemble](https://github.com/albertoakel/Kaggle/blob/master/HousePrices/notebook/02_RF_model_compare.ipynb)**
+  * **[XGBoosting](https://github.com/albertoakel/Kaggle/blob/master/HousePrices/notebook/02_XGB_model_compare.ipynb)**
 * **Avaliação comparativa** com MAE, RMSE e R²
 *  **Artefatos persistidos** (preprocessador e melhor modelo)
 
