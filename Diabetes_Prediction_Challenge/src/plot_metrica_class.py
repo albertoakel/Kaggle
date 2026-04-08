@@ -429,3 +429,194 @@ def model_evaluation_grid(
     print("\n#Processo finalizado em:", time.strftime("%H:%M:%S"))
 
     return df_imp
+
+
+def model_evaluation_grid2(
+        models_list,
+        X_test,
+        y_test,
+        best_model_pipeline,
+        best_model_name,
+        model_step='model',
+        preprocess_step='preprocess'
+):
+    """
+    Painel científico unificado para comparação de modelos:
+    - Curvas ROC (destaque principal)
+    - Estabilidade (Boxplot CV Accuracy)
+    - Accuracy × Threshold
+    - Matrizes de confusão (grid 2x2 padronizado)
+    - Feature importance (somente melhor modelo)
+
+    5. FEATURE IMPORTANCE - CORRIGIDO   """
+
+    # ======================================================
+    # 1. ROC CURVES — DESTAQUE
+    # ======================================================
+    fig = plt.figure(figsize=(18, 22))
+    gs = fig.add_gridspec(
+        4, 2,
+        height_ratios=[1.4, 1.0, 1.6, 1.4],
+        hspace=0.35, wspace=0.25
+    )
+
+    ax_roc = fig.add_subplot(gs[0, :])
+
+    idx_color = np.linspace(0, 18, len(models_list)).astype(int)
+    cores = np.array(color_palette21)[idx_color]
+
+    # cores = [color_palette21[0], color_palette21[4], color_palette21[12], color_palette21[18]]
+
+    for idx, (name, _, _, _, y_prob, _) in enumerate(models_list):
+        fpr, tpr, _ = roc_curve(y_test, y_prob)
+        auc = roc_auc_score(y_test, y_prob)
+        ax_roc.plot(fpr, tpr, color=cores[idx], linewidth=2, label=f'{name} (AUC={auc:.3f})')
+
+    ax_roc.plot([0, 1], [0, 1], 'k--', alpha=0.6)
+    ax_roc.set_title('Comparativo Global — Curvas ROC', fontsize=20, weight='bold')
+    ax_roc.set_xlabel('False Positive Rate')
+    ax_roc.set_ylabel('True Positive Rate')
+    ax_roc.legend(fontsize=11)
+    ax_roc.grid(alpha=0.3)
+
+    # ======================================================
+    # 2. ESTABILIDADE — BOXPLOT CV
+    # ======================================================
+    ax_box = fig.add_subplot(gs[1, 0])
+
+    cv_scores = [m[3] for m in models_list]
+    names = [m[0] for m in models_list]
+
+    ax_box.boxplot(cv_scores, labels=names)
+    ax_box.set_title('Estabilidade Estatística (Fold CV Accuracy)', fontsize=14, weight='bold')
+    ax_box.set_ylabel('Accuracy')
+    ax_box.grid(axis='y', linestyle='--', alpha=0.6)
+
+    # ======================================================
+    # 3. ACCURACY × THRESHOLD
+    # ======================================================
+    ax_thr = fig.add_subplot(gs[1, 1])
+
+    thresholds = np.linspace(0.05, 0.95, 60)
+
+    for idx, (name, _, _, _, probs, _) in enumerate(models_list):
+        accs = [accuracy_score(y_test, probs >= t) for t in thresholds]
+        ax_thr.plot(thresholds, accs, color=cores[idx], linewidth=2, label=name)
+
+    ax_thr.set_title('Accuracy × Threshold (Curvas de Decisão)', fontsize=14, weight='bold')
+    ax_thr.set_xlabel('Threshold')
+    ax_thr.set_ylabel('Accuracy')
+    ax_thr.legend(fontsize=10)
+    ax_thr.grid(alpha=0.3)
+
+    plt.show()
+
+    # ======================================================
+    # 4. MATRIZES DE CONFUSÃO — GRID 2x2
+    # ======================================================
+    fig, axes = plt.subplots(2, 2, figsize=(12, 10))
+    axes = axes.flatten()
+
+    fig.suptitle(
+        'Análise Comparativa — Matrizes de Confusão (Normalizadas)',
+        fontsize=18, y=1.02
+    )
+
+    for i, (name, model, *_) in enumerate(models_list):
+        if i >= 4:
+            break
+
+        y_pred = model.predict(X_test)
+        cm_norm = confusion_matrix(y_test, y_pred, normalize='true')
+        acc = accuracy_score(y_test, y_pred)
+
+        sns.heatmap(
+            cm_norm,
+            annot=True,
+            fmt='.1%',
+            ax=axes[i],
+            cmap='GnBu',
+            cbar=(i in [1, 3]),
+            vmin=0, vmax=1,
+            annot_kws={"size": 12, "weight": "bold"},
+            linewidths=0.5,
+            linecolor='gray'
+        )
+
+        axes[i].set_title(f'{name}\nAcc: {acc:.2%}', fontsize=14)
+        axes[i].set_xticklabels(['Negativo.', 'positivo'])
+        axes[i].set_yticklabels(['Negativo', 'positivo'], rotation=0)
+        axes[i].set_xlabel('Previsto')
+        axes[i].set_ylabel('Real')
+
+    plt.tight_layout()
+    plt.show()
+
+    # ======================================================
+    # 5. FEATURE IMPORTANCE — MELHOR MODELO (CORRIGIDO)
+    # ======================================================
+    # Capturamos o modelo e as importâncias brutas
+    step_model = best_model_pipeline.named_steps[model_step]
+    raw_importances = step_model.feature_importances_
+
+    # Normalizamos para 100%
+    importances = 100 * raw_importances / raw_importances.sum()
+
+    # TENTATIVA DE RESGATE DE NOMES:
+    try:
+        # A forma mais robusta: pedir ao pipeline fatiado até o último passo de preprocessamento
+        # Isso resolve o erro de dimensão (ex: 24 nomes vs 33 importâncias)
+        feature_names = best_model_pipeline[:-1].get_feature_names_out()
+    except:
+        try:
+            # Segunda tentativa: pedir ao step individual
+            feature_names = best_model_pipeline.named_steps[preprocess_step].get_feature_names_out()
+        except:
+            # Fallback final: se os métodos falharem, tentamos inferir do X_test processado
+            X_tmp = best_model_pipeline.named_steps[preprocess_step].transform(X_test.iloc[:1])
+            if hasattr(X_tmp, 'columns'):
+                feature_names = X_tmp.columns.tolist()
+            else:
+                feature_names = [f'Feature {i}' for i in range(len(importances))]
+
+    # Limpeza estética: remove prefixos como 'num__' ou 'cat__'
+    feature_names = [str(f).split('__')[-1] for f in feature_names]
+
+    # Validação de segurança para evitar erro de plotagem se as dimensões ainda divergirem
+    if len(feature_names) != len(importances):
+        feature_names = [f'Feat_{i}' for i in range(len(importances))]
+
+    df_imp = (
+        pd.DataFrame({'Feature': feature_names, 'Importance': importances})
+        .sort_values('Importance', ascending=False)
+    ).head(20)  # Limitamos aos top 20 para legibilidade
+
+    plt.figure(figsize=(11, 8))
+    ax = sns.barplot(
+        data=df_imp,
+        x='Importance',
+        y='Feature',
+        palette=sns.color_palette('GnBu_r', n_colors=len(df_imp))
+    )
+
+    for p in ax.patches:
+        width = p.get_width()
+        ax.annotate(
+            f'{width:.1f}%',
+            (width + 0.3, p.get_y() + p.get_height() / 2),
+            va='center', fontsize=10, weight='bold'
+        )
+
+    plt.title(
+        f'Feature Importance Relativa (%) — {best_model_name}',
+        fontsize=16, pad=20
+    )
+    plt.xlabel('Contribuição para Redução de Impureza [%]')
+    plt.ylabel('Atributos')
+    plt.xlim(0, df_imp['Importance'].max() * 1.15)
+    plt.grid(axis='x', linestyle='--', alpha=0.4)
+    plt.tight_layout()
+    plt.show()
+
+    print(f"\n# Processo finalizado em: {time.strftime('%H:%M:%S')}")
+    return df_imp
