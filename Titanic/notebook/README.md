@@ -8,7 +8,7 @@ Esta pasta reúne os **notebooks principais do projeto Titanic**, organizados po
 
 ### 🔍 Análise Exploratória de Dados (EDA)
 
-* [**EDA.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/EDA.ipynb): Análise exploratória completa do dataset Titanic, incluindo avaliação de qualidade dos dados, distribuições univariadas, análises bivariadas, dispersão, correlação e identificação de padrões associados à variável resposta **Survived**.
+* [**EDA.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/00_EDA.ipynb): Análise exploratória completa do dataset Titanic, incluindo avaliação de qualidade dos dados, distribuições univariadas, análises bivariadas, dispersão, correlação e identificação de padrões associados à variável resposta **Survived**.
   Este notebook fundamenta diretamente as decisões de **pré-processamento e engenharia de atributos** utilizadas nos modelos preditivos.
 
 ---
