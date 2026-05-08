@@ -15,23 +15,23 @@ Esta pasta reúne os **notebooks principais do projeto Titanic**, organizados po
 
 ### 🌲 Modelos Ensemble — Random Forest
 
-* [**models_randomForest.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/models_randomForest.ipynb):
+* [**models_randomForest.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/02_RF_model_compare.ipynb):
   Avaliação de modelos baseados em árvores do tipo Random Forest com enfase na captura de não linearidades, interações entre variáveis e análise de robustez.
 
   * Random Forest (baseline)
   * Random Forest com hiperparâmetros ajustados
 
-* [**Hiperparameter_search_RF.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/Hiperparameter_search_RF.ipyn):
+* [**Hiperparameter_search_RF.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/01_RF_tuning.ipynb):
   Busca sistemática de hiperparâmetros para Random Forest, com validação cruzada e análise comparativa de desempenho.
 
-* [**Submission_RF.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/Submission_RF.ipynb)
+* [**Submission_RF.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/03_RF_submission.ipynb)
   Geração do arquivo de submissão Kaggle utilizando o melhor modelo Random Forest selecionado.
 
 ---
 
 ### 🚀 Gradient Boosting — XGBoost
 
-* [**models_XGBoost.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/models_XGBoost.ipynb):
+* [**models_XGBoost.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/02_XGB_model_compare.ipynb):
   Avaliação de modelos XGBoost em diferentes níveis de complexidade com Foco em desempenho preditivo e controle de overfitting.
 
   * XGBoost (baseline)
@@ -39,31 +39,31 @@ Esta pasta reúne os **notebooks principais do projeto Titanic**, organizados po
   * XGBoost otimizado
 
 
-* [**Hiperparameter_search_XGB.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/Hiperparameter_search_XGB.ipynb):
+* [**Hiperparameter_search_XGB.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/01_XGB_tuning.ipynb):
   Busca de hiperparâmetros do XGBoost, explorando regularização, profundidade e taxa de aprendizado.
 
-* [**Submission_XGB.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/Submission_XGB.ipynb)
+* [**Submission_XGB.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/03_XGB_submission.ipynb)
   Notebook dedicado à geração da submissão Kaggle com o melhor modelo XGBoost.
 
 ---
 
 ### 🧠 Gradient Boosting — CatBoost
 
-* [**models_CBTBoost.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/models_CBTBoost.ipynb):
+* [**models_CBTBoost.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/02_CBT_model_compare.ipynb):
   Modelagem utilizando CatBoost, explorando seu tratamento nativo de variáveis categóricas e estabilidade em datasets tabulares.
 
-* [**Hiperparameter_search_CBT.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/Hiperparameter_search_CBT.ipynb):
+* [**Hiperparameter_search_CBT.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/01_CBT_tuning.ipynb.ipynb):
   Otimização de hiperparâmetros do CatBoost com validação cruzada.
 
-* [**Submission_CBT.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/Submission_CBT.ipynb)
+* [**Submission_CBT.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/03_CBT_submission.ipynb)
   Geração do arquivo de submissão baseado no melhor modelo CatBoost.
 
 ---
 ### 📏 Support Vector Machine — SVM
 
-* [**models_SVM.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/models_CBTBoost.ipynb):
+* [**models_SVM.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/02_SVM_model_compare.ipynb):
 
-* [**Hiperparameter_search_SVM.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/Hiperparameter_search_CBT.ipynb):
+* [**Hiperparameter_search_SVM.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/01_SVM_tuning.ipynb):
   Otimização de hiperparâmetros do SVM com validação cruzada.
 
   
