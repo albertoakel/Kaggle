@@ -1,6 +1,6 @@
 ## Descritivo de Transformações **Preprocessador Titanic v1.2**
 
-Este documento descreve as etapas de pré-processamento, engenharia de atributos e tratamento de dados realizadas pelo [**Preprocessador Titanic v1.2**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/src/preprocess_Titanic_v1.2.joblib). Todas as estatísticas são aprendidas durante o método `fit()` e posteriormente aplicadas de forma consistente no método `transform()`, evitando vazamento de dados (*data leakage*).
+Este documento descreve as etapas de pré-processamento, engenharia de atributos e tratamento de dados realizadas pelo [**Preprocessador Titanic v1.2**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/src/preprocess_utils_tic.py). Todas as estatísticas são aprendidas durante o método `fit()` e posteriormente aplicadas de forma consistente no método `transform()`, evitando vazamento de dados (*data leakage*).
 
 ---
 
