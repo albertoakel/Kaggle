@@ -61,7 +61,7 @@ Esta pasta reúne os **notebooks principais do projeto Titanic**, organizados po
 ---
 ### 📏 Support Vector Machine — SVM
 
-* [**models_SVM.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/02_SVM_model_compare.ipynb):
+* [**models_SVM.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/02_SVM_model_compare.ipynb):Modelagem utilizando Support Vector Machines (SVM), com foco na exploração de diferentes funções de kernel (como RBF e Linear), otimização da margem de separação e análise da sensibilidade do modelo ao escalonamento de variáveis.
 
 * [**Hiperparameter_search_SVM.ipynb**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/01_SVM_tuning.ipynb):
   Otimização de hiperparâmetros do SVM com validação cruzada.

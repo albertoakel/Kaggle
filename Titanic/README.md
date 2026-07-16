@@ -17,22 +17,27 @@ Desenvolver um pipeline completo de **análise exploratória, pré-processamento
 
 ## 🔍 O que você vai encontrar neste projeto
 
-* **EDA detalhada** com análise estatística e visual dos fatores de sobrevivência
-* **Tratamento de dados ausentes** (`Age`, `Cabin`, `Embarked`)
-* **Feature engineering** (tamanho da família, título do nome, variáveis binárias)
-* **Pré-processamento completo**:
 
-  * imputação
-  * normalização
-  * codificação categórica
-* **Modelos avaliados**:
+### [🔍 Análise Exploratória de Dados (EDA)](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/00_EDA.ipynb)
 
-  * Random Forest Classifier
-  * Gradient Boosting / XGBoost
-  * CatBoost
-  * SVM
-* **Avaliação comparativa** com métricas de classificação
-* **Modelo final pronto para submissão no Kaggle**
+Análise exploratória completa do dataset Titanic, incluindo avaliação de qualidade dos dados, distribuições univariadas, análises bivariadas, dispersão, correlação e identificação de padrões associados à variável resposta **Survived**.
+Este notebook fundamenta diretamente as decisões de **pré-processamento e engenharia de atributos** utilizadas nos modelos preditivos.
+
+### [Pré-processamento completo](https://github.com/albertoakel/Kaggle/blob/master/Titanic/src/Descritivo%20_das_transforma%C3%A7%C3%B5es.md)
+O projeto adota pipelines integrados que conectam a modelagem a um pré-processamento
+completo (imputação, normalização e codificação categórica). Esse fluxo é centralizado e reutilizável via objetos serializados,
+garantindo consistência entre treino e inferência e evitando o vazamento de dados (data leakage).
+
+
+### Modelagem Preditiva
+
+* [**Random Forest**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/02_RF_model_compare.ipynb):
+Foco na captura de relações não lineares, interações entre variáveis e robustez do modelo.
+* [**XGBoost (eXtreme Gradient Boosting)** ](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/02_XGB_model_compare.ipynb):
+Foco em maximizar o desempenho preditivo através do controle rigoroso de overfitting.
+* [**CatBoost (Categorical Boosting)**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/02_CBT_model_compare.ipynb):
+Exploração do tratamento nativo de variáveis categóricas e estabilidade do modelo em dados tabulares.
+* [**SVM (Support Vector Machine)**](https://github.com/albertoakel/Kaggle/blob/master/Titanic/notebook/02_SVM_model_compare.ipynb):Análise de diferentes kernels (RBF e Linear), otimização de margens e o impacto do escalonamento dos dados.
 
 ---
 

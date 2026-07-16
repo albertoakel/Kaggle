@@ -1,4 +1,5 @@
 #preprocess_utils_tic.py
+
 # =============================================================================
 # PREPROCESSAMENTO - TITANIC
 # =============================================================================
@@ -6,18 +7,13 @@
 import os
 import joblib
 from datetime import datetime
-
 import numpy as np
 import pandas as pd
-
 pd.set_option('display.max_columns', None)
 
-# =============================================================================
-# Scikit-learn
-# =============================================================================
 
 from sklearn.model_selection import train_test_split
-
+# Scikit-learn - Pré-processamento e pipelines
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
@@ -41,36 +37,26 @@ class preprocessador_titanic(BaseEstimator, TransformerMixin):
     - One-hot encoding com alinhamento de colunas
     """
 
+
     def __init__(self):
         self.embarked_mode_ = None
         self.age_medians_ = {}
         self.global_age_median_ = None
 
-    # =========================================================================
-    # FIT
-    # Aprende os parâmetros do conjunto de treino
-    # =========================================================================
 
     def fit(self, X, y=None):
         X = X.copy()
 
-        # ---------------------------------------------------------------------
-        # 1. Moda de Embarked
-        # ---------------------------------------------------------------------
         if 'Embarked' in X.columns:
             # Garante que pegamos o valor (string) e não a Series
             mode_series = X['Embarked'].mode()
             self.embarked_mode_ = mode_series[0] if not mode_series.empty else 'S'
 
-        # ---------------------------------------------------------------------
-        # 2. HasCabin variavel binaria
-        # ---------------------------------------------------------------------
+        # 1. Criar HasCabin logo no início para consistência
         if 'Cabin' in X.columns:
             X['HasCabin'] = X['Cabin'].notnull().astype(int)
 
-        ## ---------------------------------------------------------------------
-        # 3. Estatísticas para imputação
-        # ---------------------------------------------------------------------
+        # 2. Cálculos de média (sua lógica está correta)
         if 'Age' in X.columns:
             self.global_age_median_ = X['Age'].median()
             group_cols = ['Sex', 'Pclass', 'HasCabin']
@@ -81,13 +67,10 @@ class preprocessador_titanic(BaseEstimator, TransformerMixin):
         if 'Fare' in X.columns:
             self.fare_median_ = X['Fare'].median()  #new
 
-        # ---------------------------------------------------------------------
-        # 4. Feature Engineering
-        # ---------------------------------------------------------------------
-        #4.1 calculo tamanho da familia
+        # 3. Aplicar TODAS as transformações que o transform faria
+        # Isso garante que dummy_columns_ aprenda a estrutura final real
         X['FamilySize'] = X['SibSp'] + X['Parch'] + 1
 
-        #4.2 definição do andar do navio
         if 'Cabin' in X.columns:
             X['Deck'] = X['Cabin'].apply(
                 lambda x: 'U' if pd.isnull(x) or str(x)[0] == 'T' else str(x)[0]
@@ -98,20 +81,17 @@ class preprocessador_titanic(BaseEstimator, TransformerMixin):
             X['Age2'] = X['Age']
             X.drop(columns='Age', inplace=True)
 
-        # Novo transformaçao: pega pronome dos nomes (v1.2)
-        #4.3 Extração e agrupamento de títulos
+        # Novo transformaçao: pega pronome dos nomes (v1.2)    <-- aqui
         X['Title'] = X['Name'].str.split(', ').str[1].str.split('.', n=1).str[0]  # pegando titulos dos nomes
         X['Title'] = X['Title'].replace({"Mlle": "Miss", "Ms": "Miss"})
         X['Title'] = X['Title'].replace("Mme", "Mrs")
         common_titles = ['Mr', 'Miss', 'Mrs', 'Master']
         X['Title'] = X['Title'].apply(lambda x: x if x in common_titles else 'Rare')
 
-
-        #4.4 Remoção de colunas não utilizadas
         drop_cols = [c for c in ['Name', 'Ticket'] if c in X.columns]
         X.drop(columns=drop_cols, inplace=True)
 
-        # 4.5. One-Hot Encoding
+        # 4. Agora sim captura as colunas do dummy
         X_dummy = pd.get_dummies(X, drop_first=False)
         self.dummy_columns_ = X_dummy.columns
 
@@ -121,16 +101,14 @@ class preprocessador_titanic(BaseEstimator, TransformerMixin):
 
         return self
 
-    # =========================================================================
+    # =========================
     # TRANSFORM
-    # Aplica exatamente as mesmas transformações aprendidas no FIT
-    # =========================================================================
-
+    # =========================
     def transform(self, X):
         X = X.copy()
 
         # -----------------------
-        # 1. Cabin → HasCabin + Deck
+        # Cabin → HasCabin + Deck
         # -----------------------
         if 'Cabin' in X.columns:
             X['HasCabin'] = X['Cabin'].notnull().astype(int)
@@ -140,13 +118,13 @@ class preprocessador_titanic(BaseEstimator, TransformerMixin):
             X.drop(columns='Cabin', inplace=True)
 
         # -----------------------
-        # 2. Embarked → moda
+        # Embarked
         # -----------------------
         if 'Embarked' in X.columns:
             X['Embarked'] = X['Embarked'].fillna(self.embarked_mode_)
 
         # -----------------------
-        # 3. Age → Age2 (hierarchical imputation)
+        # Age → Age2 (hierarchical imputation)
         # -----------------------
         if 'Age' in X.columns:
             X['Age2'] = X['Age']
@@ -159,16 +137,14 @@ class preprocessador_titanic(BaseEstimator, TransformerMixin):
             X['Age2'] = X['Age2'].fillna(self.global_age_median_)
             X.drop(columns='Age', inplace=True)
 
-        # 4. Fare → mediana
         if 'Fare' in X.columns:
             X['Fare'] = X['Fare'].fillna(self.fare_median_) #new
         # -----------------------
-        # 5.FamilySize
+        # FamilySize
         # -----------------------
         X['FamilySize'] = X['SibSp'] + X['Parch'] + 1
 
         # Novo transformaçao: pega pronome dos nomes (v1.2)  <-- aqui
-        # 6.Extração e agrupamento de Title
         X['Title'] = X['Name'].str.split(', ').str[1].str.split('.', n=1).str[0]  # pegando titulos dos nomes
         X['Title'] = X['Title'].replace({"Mlle": "Miss", "Ms": "Miss"})
         X['Title'] = X['Title'].replace("Mme", "Mrs")
@@ -176,13 +152,13 @@ class preprocessador_titanic(BaseEstimator, TransformerMixin):
         X['Title'] = X['Title'].apply(lambda x: x if x in common_titles else 'Rare')
 
         # -----------------------
-        # 7. Remoção de colunas
+        # Drop columns
         # -----------------------
         drop_cols = [c for c in ['Name', 'Ticket'] if c in X.columns]
         X.drop(columns=drop_cols, inplace=True)
 
         # -----------------------
-        # 8. One-hot encoding
+        # One-hot encoding
         # -----------------------
         X = pd.get_dummies(X, drop_first=False)
         X = X.reindex(columns=self.dummy_columns_, fill_value=0)
@@ -192,11 +168,6 @@ class preprocessador_titanic(BaseEstimator, TransformerMixin):
         return X
 
 def main():
-
-    # =========================================================================
-    # CONFIGURAÇÕES
-    # =========================================================================
-
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     ROOT_DIR = os.path.dirname(BASE_DIR)
     DATA_DIR = os.path.join(ROOT_DIR, "data","raw")
@@ -205,50 +176,41 @@ def main():
     TEST_SIZE = 0.3
     TARGET = 'Survived'
 
-    # =========================================================================
-    # 1. LEITURA DOS DADOS
-    # =========================================================================
+#   1. Leitura dos dados
     dfo = pd.read_csv("/home/akel/PycharmProjects/Kaggle/Titanic/data/raw/train.csv").drop(columns='PassengerId')
 
-    # =========================================================================
-    # 2. DIVISÃO TREINO / TESTE
-    # O split ocorre antes de qualquer cálculo estatístico.
-    # =========================================================================
+#   2. Split antes de qualquer decisão estatística
     X = dfo.drop(columns=TARGET)
     y = dfo[TARGET]
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=TEST_SIZE, random_state=RANDOM_STATE )
 
-    # =========================================================================
-    # 3. AJUSTE DO PREPROCESSADOR
-    # Aprende estatísticas apenas a partir do conjunto de treino.
-    # =========================================================================
+#
+# #🧩 3. Pré-processadores
     PP = preprocessador_titanic()
     PP.fit(X_train)
 
-    # =========================================================================
-    # 4. METADADOS DO ARTEFATO
-    # =========================================================================
     artifact = {'preprocessador': PP}
-    artifact = {'preprocessador': PP,
-                'metadata': {'dataset': 'Kaggle Titanic Survival',
-                'descricao': ('Preprocessador customizado: Engenharia de Deck (Cabin), '
-                              'Criação de FamilySize, HasCabin, e Imputação Hierárquica de Idade '
-                              'baseada em Sexo, Pclass e HasCabin.'
-                              'agrupamento de titulos dos nomes'),
-                'target_transform': 'None (Binary Classification)',
-                'fit_on': 'X_train only (30% test split)',
-                'created_at': datetime.now().isoformat(),
-                'author': 'Alberto Akel',
-                'version': 'v1.2'}}
 
-    # =========================================================================
-    # 5. SALVAMENTO DOS ARQUIVOS
-    # - preprocessador
-    # - bases de treino
-    # - bases de teste
-    # =========================================================================
+    artifact = {
+        'preprocessador': PP,
+        'metadata': {
+            'dataset': 'Kaggle Titanic Survival',
+            'descricao': (
+                'Preprocessador customizado: Engenharia de Deck (Cabin), '
+                'Criação de FamilySize, HasCabin, e Imputação Hierárquica de Idade '
+                'baseada em Sexo, Pclass e HasCabin.'
+                'agrupamento de titulos dos nomes'
+            ),
+            'target_transform': 'None (Binary Classification)',
+            'fit_on': 'X_train only (30% test split)',
+            'created_at': datetime.now().isoformat(),
+            'author': 'Alberto Akel',
+            'version': 'v1.2'
+        }
+    }
 
+# # save files
     joblib.dump(artifact, 'preprocess_Titanic_v1.2.joblib')
 
 
