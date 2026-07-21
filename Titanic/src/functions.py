@@ -85,7 +85,8 @@ def inital_describe(df, simple=False):
             if col in df.columns:
                 print(f"\n{str.upper(col)}")
                 print(f"Quantidade de valores únicos: {df[col].nunique()}")
-                print(f"Valores: {df[col].unique()}")
+                if df[col].nunique()/df.shape[0]<0.05:
+                    print(f"Valores: {df[col].unique()}")
 
         # Estatísticas básicas para colunas numéricas
         print(f"\n📊 ESTATÍSTICAS BÁSICAS (colunas numéricas):")
